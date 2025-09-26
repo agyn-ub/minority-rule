@@ -1,5 +1,5 @@
-import FungibleToken from 0xf233dcee88fe0abe
-import FlowToken from 0x1654653399040a61
+import FungibleToken from 0xee82856bf20e2aa6
+import FlowToken from 0x0ae53cb6e3f42a79
 import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 
 transaction(gameId: UInt64, amount: UFix64) {
@@ -7,9 +7,9 @@ transaction(gameId: UInt64, amount: UFix64) {
     let paymentVault: @FungibleToken.Vault
     let playerAddress: Address
 
-    prepare(signer: AuthAccount) {
+    prepare(signer: auth(BorrowValue, SaveValue) &Account) {
         // Get the player's FlowToken vault
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("Could not borrow reference to owner's vault")
 
         // Withdraw the entry fee

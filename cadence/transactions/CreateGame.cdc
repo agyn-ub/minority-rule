@@ -7,14 +7,15 @@ transaction(
     maxPlayers: UInt32,
     questionText: String
 ) {
+    let creator: Address
 
-    prepare(signer: AuthAccount) {
-        // Transaction signed by game creator
+    prepare(signer: auth(Storage) &Account) {
+        self.creator = signer.address
     }
 
     execute {
         let gameId = MinorityRuleGame.createGame(
-            creator: self.signerAddress,
+            creator: self.creator,
             entryFee: entryFee,
             roundDuration: roundDuration,
             minPlayers: minPlayers,

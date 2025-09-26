@@ -2,7 +2,7 @@ import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 
 transaction(gameId: UInt64) {
 
-    prepare(signer: AuthAccount) {
+    prepare(signer: auth(Storage) &Account) {
         // Transaction signed by game creator
     }
 

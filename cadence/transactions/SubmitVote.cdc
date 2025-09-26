@@ -4,7 +4,7 @@ transaction(gameId: UInt64, vote: Bool) {
 
     let playerAddress: Address
 
-    prepare(signer: AuthAccount) {
+    prepare(signer: auth(Storage) &Account) {
         self.playerAddress = signer.address
     }
 

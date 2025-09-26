@@ -1,5 +1,5 @@
-import FungibleToken from 0xf233dcee88fe0abe
-import FlowToken from 0x1654653399040a61
+import FungibleToken from 0xee82856bf20e2aa6
+import FlowToken from 0x0ae53cb6e3f42a79
 import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 
 transaction(gameId: UInt64) {
@@ -7,12 +7,11 @@ transaction(gameId: UInt64) {
     let winnerAddress: Address
     let receiverRef: &{FungibleToken.Receiver}
 
-    prepare(signer: AuthAccount) {
+    prepare(signer: auth(BorrowValue) &Account) {
         self.winnerAddress = signer.address
 
         // Get reference to winner's FlowToken receiver
-        self.receiverRef = signer.getCapability(/public/flowTokenReceiver)
-            .borrow<&{FungibleToken.Receiver}>()
+        self.receiverRef = signer.capabilities.borrow<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
             ?? panic("Could not borrow reference to receiver")
     }
 
