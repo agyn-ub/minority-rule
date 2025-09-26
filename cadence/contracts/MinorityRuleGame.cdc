@@ -151,7 +151,7 @@ access(all) contract MinorityRuleGame {
             self.currentRound = 0
             self.roundDeadline = nil
             self.players = {}
-            self.prizePool <- FlowToken.createEmptyVault(vaultType: Type<@FlowToken.Vault>()) as! @FlowToken.Vault
+            self.prizePool <- FlowToken.createEmptyVault(vaultType: Type<@FlowToken.Vault>())
             self.roundHistory = []
             self.currentVotes = {}
             self.hasVoted = {}
@@ -428,7 +428,7 @@ access(all) contract MinorityRuleGame {
     }
 
     access(all) fun borrowGame(_ gameId: UInt64): &Game? {
-        return &self.games[gameId] as &Game?
+        return &self.games[gameId]
     }
 
     access(all) fun getPlayerProfile(_ address: Address): PlayerProfile? {

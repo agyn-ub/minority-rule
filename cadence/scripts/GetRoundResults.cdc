@@ -1,10 +1,8 @@
 import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 
-access(all) fun main(gameId: UInt64): [MinorityRuleGame.RoundResult]? {
+access(all) fun main(gameId: UInt64): [MinorityRuleGame.RoundResult] {
     let game = MinorityRuleGame.borrowGame(gameId)
-    if game == nil {
-        return nil
-    }
+        ?? panic("Game does not exist")
 
-    return game!.roundHistory
+    return game.roundHistory
 }
