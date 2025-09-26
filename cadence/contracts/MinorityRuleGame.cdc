@@ -151,7 +151,7 @@ access(all) contract MinorityRuleGame {
             self.currentRound = 0
             self.roundDeadline = nil
             self.players = {}
-            self.prizePool <- FlowToken.createEmptyVault() as! @FlowToken.Vault
+            self.prizePool <- FlowToken.createEmptyVault(vaultType: Type<@FlowToken.Vault>()) as! @FlowToken.Vault
             self.roundHistory = []
             self.currentVotes = {}
             self.hasVoted = {}
@@ -160,7 +160,7 @@ access(all) contract MinorityRuleGame {
 
         // ========== Player Management ==========
 
-        access(all) fun joinGame(player: Address, payment: @FungibleToken.Vault) {
+        access(all) fun joinGame(player: Address, payment: @{FungibleToken.Vault}) {
             pre {
                 self.state == GameState.created: "Game must be in created state to join"
                 payment.balance == self.entryFee: "Payment must equal entry fee"
@@ -354,7 +354,7 @@ access(all) contract MinorityRuleGame {
 
         // ========== Prize Distribution ==========
 
-        access(all) fun claimPrize(winner: Address): @FungibleToken.Vault {
+        access(all) fun claimPrize(winner: Address): @{FungibleToken.Vault} {
             pre {
                 self.state == GameState.complete: "Game not complete"
                 self.players[winner] != nil: "Not a player"
