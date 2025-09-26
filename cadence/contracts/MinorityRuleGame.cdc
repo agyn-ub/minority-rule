@@ -1,5 +1,5 @@
-import FungibleToken from "../imports/f233dcee88fe0abe/FungibleToken.cdc"
-import FlowToken from "../imports/1654653399040a61/FlowToken.cdc"
+import FungibleToken from 0xf233dcee88fe0abe
+import FlowToken from 0x1654653399040a61
 
 access(all) contract MinorityRuleGame {
 
