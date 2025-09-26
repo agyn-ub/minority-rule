@@ -25,22 +25,19 @@ The Minority Rule Game is a psychological strategy game inspired by the Liar Gam
 
 ### 2. Voting Mechanism
 
-#### Simple Private Voting with Flow Forte Timer
+#### Simple Private Voting
 To enable strategic gameplay while maintaining simplicity:
 
-**Voting Phase (Configurable Duration)**
-- Round timer managed by Flow Forte for automatic transitions
+**Voting Phase (24 hours)**
 - Players submit their vote privately (stored on-chain but hidden)
 - Public discussions/announcements allowed (enabling deception and strategy)
 - Cannot see others' votes until round ends
-- Vote stored with access control until timer expires
+- Vote stored encrypted or access-controlled until reveal
 
-**Results Reveal (Flow Forte Triggered)**
-- Flow Forte automatically triggers reveal when timer expires
-- All votes revealed simultaneously via automated callback
+**Results Reveal (Automatic)**
+- When voting deadline passes, all votes revealed simultaneously
 - Non-voting players automatically eliminated
 - Results calculated and minority determined instantly
-- Next round timer automatically starts for remaining players
 
 #### Vote Options
 - Binary choice: YES (true) or NO (false)
@@ -113,8 +110,6 @@ VoteRecord {
 
 #### Main Contract: `MinorityRuleGame.cdc`
 ```cadence
-import FlowForte from 0xFlowForteAddress
-
 access(all) contract MinorityRuleGame {
     // Game Management
     access(all) resource Game {
@@ -126,8 +121,6 @@ access(all) contract MinorityRuleGame {
         access(all) let prizePool: @FlowToken.Vault
         access(contract) var currentVotes: {Address: Bool}  // Hidden until reveal
         access(all) var roundHistory: [RoundResult]  // Public after each round
-        access(all) let roundDuration: UFix64  // Duration in seconds
-        access(all) var currentRoundTimerId: UInt64?  // Flow Forte timer ID
     }
 
     // Player Management
@@ -153,21 +146,15 @@ access(all) contract MinorityRuleGame {
 ### 2. Core Functions
 
 #### Game Lifecycle
-- `createGame(entryFee: UFix64, questionText: String, roundDuration: UFix64)`: Initialize new game with timer duration
+- `createGame(entryFee: UFix64, questionText: String)`: Initialize new game
 - `joinGame(gameId: UInt64, payment: @FlowToken.Vault)`: Player registration
-- `startGame(gameId: UInt64)`: Transition to active state and start first round timer
-- `startNewRound(gameId: UInt64)`: Set up new round and start Flow Forte timer
+- `startGame(gameId: UInt64)`: Transition to active state
+- `startNewRound(gameId: UInt64)`: Begin commit phase
 
 #### Voting Functions
-- `submitVote(gameId: UInt64, vote: Bool)`: Submit private vote before timer expires
-- `onRoundTimerExpired(gameId: UInt64)`: Flow Forte callback to process round automatically
+- `submitVote(gameId: UInt64, vote: Bool)`: Submit private vote
 - `processRound(gameId: UInt64)`: Reveal all votes and calculate minority
 - `getPlayerHistory(address: Address)`: View player's complete voting history
-
-#### Flow Forte Integration
-- `scheduleRoundEnd(gameId: UInt64, duration: UFix64)`: Schedule automatic round processing
-- `cancelTimer(timerId: UInt64)`: Cancel timer if game ends early
-- `handleTimerCallback(gameId: UInt64)`: Process round when timer expires
 
 #### Prize Distribution
 - `claimPrize(gameId: UInt64)`: Winner withdraws pool
@@ -177,36 +164,29 @@ access(all) contract MinorityRuleGame {
 
 #### Player Transactions
 - `transactions/JoinGame.cdc`: Join with stake
-- `transactions/SubmitVote.cdc`: Submit private vote before timer expires
+- `transactions/SubmitVote.cdc`: Submit private vote
 - `transactions/ClaimPrize.cdc`: Winner claims pool
 
 #### Admin Transactions
-- `transactions/CreateGame.cdc`: Initialize game with round duration
-- `transactions/StartGame.cdc`: Begin game and start Flow Forte timer
-- `transactions/ProcessRound.cdc`: Manual trigger (backup if timer fails)
-
-#### Flow Forte Transactions
-- `transactions/SetupFlowForte.cdc`: Initialize Flow Forte timer capability
-- `transactions/ConfigureTimer.cdc`: Set or update round timer duration
+- `transactions/CreateGame.cdc`: Initialize game
+- `transactions/StartGame.cdc`: Begin game
+- `transactions/ProcessRound.cdc`: Trigger round processing
 
 #### Query Scripts
-- `scripts/GetGameState.cdc`: Current game status and timer info
+- `scripts/GetGameState.cdc`: Current game status
 - `scripts/GetPlayerHistory.cdc`: Complete voting history of any player
 - `scripts/GetRoundResults.cdc`: All votes from previous rounds
 - `scripts/GetWhoVoted.cdc`: Who has voted (not the votes themselves)
-- `scripts/GetTimeRemaining.cdc`: Time left in current round (via Flow Forte)
 - `scripts/GetPrizePool.cdc`: Current pool size
 - `scripts/GetAllPlayersStats.cdc`: Statistics for all players in game
 
 ### 4. Events
 
 ```cadence
-access(all) event GameCreated(gameId: UInt64, entryFee: UFix64, roundDuration: UFix64)
+access(all) event GameCreated(gameId: UInt64, entryFee: UFix64)
 access(all) event PlayerJoined(gameId: UInt64, player: Address, stake: UFix64)
 access(all) event GameStarted(gameId: UInt64, playerCount: UInt32)
-access(all) event RoundTimerStarted(gameId: UInt64, round: UInt32, timerId: UInt64, duration: UFix64)
 access(all) event VoteSubmitted(gameId: UInt64, player: Address, round: UInt32)
-access(all) event RoundTimerExpired(gameId: UInt64, round: UInt32)
 access(all) event RoundResultsRevealed(gameId: UInt64, round: UInt32, votes: {Address: Bool})
 access(all) event PlayerEliminated(gameId: UInt64, player: Address, round: UInt32)
 access(all) event RoundComplete(gameId: UInt64, round: UInt32, survivors: UInt32)
@@ -247,19 +227,17 @@ access(all) event GameComplete(gameId: UInt64, winner: Address, prize: UFix64)
 - Vault operations atomic
 - State updates before external calls
 
-#### Time Management with Flow Forte
-- Flow Forte handles all round timers automatically
-- Configurable round durations (e.g., 24 hours, 1 hour for testing)
-- Automatic round processing when timer expires
-- No manual intervention needed for round transitions
-- Backup manual processing available if timer fails
+#### Time Manipulation
+- Use block timestamps for phases
+- Minimum phase durations enforced
+- Grace periods for network delays
 
 ## Economic Model
 
 ### 1. Tokenomics
 
 #### Staking Mechanism
-- Minimum stake: 10 FLOW
+- Minimum stake: 1 FLOW
 - Maximum stake: Optional cap per game
 - No partial withdrawals during game
 - Stakes locked until elimination/victory
@@ -285,8 +263,7 @@ access(all) event GameComplete(gameId: UInt64, winner: Address, prize: UFix64)
 
 ### Phase 1: Core Development (Week 1-2)
 - [ ] Create MinorityRuleGame.cdc main contract
-- [ ] Integrate Flow Forte for timer management
-- [ ] Implement simple voting system with automatic reveal
+- [ ] Implement commit-reveal voting system
 - [ ] Basic game lifecycle management
 - [ ] Unit tests for core logic
 

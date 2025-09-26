@@ -1,5 +1,5 @@
-import FungibleToken from 0xee82856bf20e2aa6
-import FlowToken from 0x0ae53cb6e3f42a79
+import "FungibleToken"
+import "FlowToken"
 
 access(all) contract MinorityRuleGame {
 
@@ -428,7 +428,7 @@ access(all) contract MinorityRuleGame {
     }
 
     access(all) fun borrowGame(_ gameId: UInt64): &Game? {
-        return &self.games[gameId]
+        return &self.games[gameId] as &Game?
     }
 
     access(all) fun getPlayerProfile(_ address: Address): PlayerProfile? {
