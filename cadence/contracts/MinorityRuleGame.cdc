@@ -428,7 +428,7 @@ access(all) contract MinorityRuleGame {
     }
 
     access(all) fun borrowGame(_ gameId: UInt64): &Game? {
-        return &self.games[gameId] as &Game?
+        return &self.games[gameId]
     }
 
     access(all) fun getPlayerProfile(_ address: Address): PlayerProfile? {
