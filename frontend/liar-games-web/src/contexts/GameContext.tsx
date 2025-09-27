@@ -37,8 +37,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [currentGame, setCurrentGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize FCL on mount
+  useEffect(() => {
+    initializeFCL();
+    setIsInitialized(true);
+  }, []);
 
   const fetchGames = useCallback(async () => {
+    // Wait for FCL to be initialized
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping fetchGames');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -87,9 +99,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isInitialized]);
 
   const fetchGameById = useCallback(async (gameId: string) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping fetchGameById');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -126,9 +142,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isInitialized]);
 
   const createGame = useCallback(async (entryFee: string, questionText: string) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping createGame');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -164,9 +184,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [fetchGames]);
+  }, [fetchGames, isInitialized]);
 
   const joinGame = useCallback(async (gameId: string) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping joinGame');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
