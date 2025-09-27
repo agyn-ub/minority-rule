@@ -1,0 +1,1 @@
+claude mcp add --transport http context7 https://mcp.context7.com/mcp --header "CONTEXT7_API_KEY: ctx7sk-bb483bfc-5d92-4469-b59d-a71ccd083825"

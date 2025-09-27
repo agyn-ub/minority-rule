@@ -1,22 +1,20 @@
 import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 
-access(all) fun main(gameId: UInt64): [MinorityRuleGame.RoundResult] {
+access(all) fun main(gameId: UInt64): [{String: AnyStruct}] {
     let game = MinorityRuleGame.borrowGame(gameId)
         ?? panic("Game does not exist")
 
-    // Since game is a reference, we need to create a copy of the struct values
-    let history: [MinorityRuleGame.RoundResult] = []
-    for i in 0..<game.roundHistory.length {
-        let roundRef = game.roundHistory[i]
-        // Create a new struct instance from the reference
-        let roundCopy = MinorityRuleGame.RoundResult(
-            round: roundRef.round,
-            votes: roundRef.votes,
-            minorityChoice: roundRef.minorityChoice,
-            eliminated: roundRef.eliminatedPlayers,
-            surviving: roundRef.survivingPlayers
-        )
-        history.append(roundCopy)
+    // Convert RoundResult structs to dictionaries for proper type handling
+    let results: [{String: AnyStruct}] = []
+    for roundResult in game.roundHistory {
+        results.append({
+            "round": roundResult.round,
+            "votes": roundResult.votes,
+            "minorityChoice": roundResult.minorityChoice,
+            "eliminatedPlayers": roundResult.eliminatedPlayers,
+            "survivingPlayers": roundResult.survivingPlayers,
+            "timestamp": roundResult.timestamp
+        })
     }
-    return history
+    return results
 }
