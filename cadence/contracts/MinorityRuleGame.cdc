@@ -264,24 +264,31 @@ access(all) contract MinorityRuleGame {
                 }
             }
 
+
             // Determine minority (if tied, both survive)
-            let minorityChoice: Bool = yesVotes <= noVotes
+            // If yesVotes < noVotes, then YES is minority (true)
+            // If noVotes < yesVotes, then NO is minority (false)
+            let minorityChoice: Bool = yesVotes < noVotes
             let isTie: Bool = yesVotes == noVotes
+
 
             // Process eliminations
             var eliminated: [Address] = []
             var surviving: [Address] = []
 
             for address in activePlayers {
-                let player = self.players[address]!
+                var player = self.players[address]!  // Use var instead of let
 
                 // Check if player voted
                 if let vote = self.currentVotes[address] {
-                    // Player voted - check if minority
-                    if isTie || vote == minorityChoice {
+                    // Player voted - check if in minority or tie
+                    // In a tie, everyone survives
+                    // Otherwise, only minority survives
+                    if isTie || (vote == minorityChoice) {
                         surviving.append(address)
                     } else {
                         player.eliminate(round: self.currentRound)
+                        self.players[address] = player  // Reassign the modified struct
                         eliminated.append(address)
                         emit PlayerEliminated(
                             gameId: self.gameId,
@@ -294,6 +301,7 @@ access(all) contract MinorityRuleGame {
                 } else {
                     // Player didn't vote - eliminate
                     player.eliminate(round: self.currentRound)
+                    self.players[address] = player  // Reassign the modified struct
                     eliminated.append(address)
                     emit PlayerEliminated(
                         gameId: self.gameId,
@@ -329,38 +337,45 @@ access(all) contract MinorityRuleGame {
                 eliminated: UInt32(eliminated.length)
             )
 
-            // Check game end conditions
-            if surviving.length <= 1 {
-                self.endGame(winner: surviving.length == 1 ? surviving[0] : nil)
+            // Check game end conditions - game ends when less than 3 players remain
+            let remainingActivePlayers = self.getActivePlayers()
+            if remainingActivePlayers.length < 3 {
+                // Game ends with 0, 1, or 2 winners
+                self.endGame(winners: remainingActivePlayers)
             } else {
                 self.startNewRound()
             }
         }
 
-        access(contract) fun endGame(winner: Address?) {
+        access(contract) fun endGame(winners: [Address]) {
             self.state = GameState.complete
+
+            // Calculate prize per winner (split if multiple winners)
+            let prizePerWinner = winners.length > 0 ? self.prizePool.balance / UFix64(winners.length) : 0.0
 
             // Update player profiles
             for address in self.players.keys {
                 let player = self.players[address]!
                 let roundsSurvived = player.eliminatedRound ?? self.currentRound
+                let isWinner = winners.contains(address)
 
                 if MinorityRuleGame.playerProfiles[address] == nil {
                     MinorityRuleGame.playerProfiles[address] = PlayerProfile(address: address)
                 }
 
                 MinorityRuleGame.playerProfiles[address]!.updateStats(
-                    won: winner == address,
+                    won: isWinner,
                     stake: self.entryFee,
-                    winnings: winner == address ? self.prizePool.balance : 0.0,
+                    winnings: isWinner ? prizePerWinner : 0.0,
                     roundsSurvived: roundsSurvived,
                     totalRounds: self.currentRound
                 )
             }
 
+            // Emit event - for backward compatibility, use first winner or nil
             emit GameComplete(
                 gameId: self.gameId,
-                winner: winner,
+                winner: winners.length > 0 ? winners[0] : nil,
                 prize: self.prizePool.balance
             )
         }

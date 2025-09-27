@@ -82,26 +82,21 @@ access(all) fun testScenarioA_Classic5PlayerGame() {
     Test.moveTime(by: 61.0)
     processRound(gameId)
 
-    // Verify Round 1 results
+    // Verify Round 1 results - game should end with 2 winners
     let activePlayers1 = getActivePlayers(gameId)
     Test.assertEqual(2, activePlayers1.length)
     Test.assert(activePlayers1.contains(dave!.address))
     Test.assert(activePlayers1.contains(eve!.address))
 
-    // Round 2: Dave votes YES (minority), Eve votes NO
-    submitVote(dave!, gameId, true)
-    submitVote(eve!, gameId, false)
-
-    Test.moveTime(by: 61.0)
-    processRound(gameId)
-
-    // Verify Dave wins
+    // Game should have ended after Round 1 (less than 3 players)
     let gameState = getGameState(gameId)
     Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
 
-    let finalActivePlayers = getActivePlayers(gameId)
-    Test.assertEqual(1, finalActivePlayers.length)
-    Test.assertEqual(dave!.address, finalActivePlayers[0])
+    // Both Dave and Eve are winners
+    let winners = getActivePlayers(gameId)
+    Test.assertEqual(2, winners.length)
+    Test.assert(winners.contains(dave!.address))
+    Test.assert(winners.contains(eve!.address))
 }
 
 // ========== Scenario B: Minimum Player Game (2 Players) ==========
@@ -119,19 +114,20 @@ access(all) fun testScenarioB_MinimumPlayerGame() {
     joinGame(bob!, gameId, 20.0)
     startGame(gameId)
 
-    // Round 1: Alice YES, Bob NO - one must be eliminated
+    // Round 1: Alice YES, Bob NO - it's a tie with 2 players!
     submitVote(alice!, gameId, true)
     submitVote(bob!, gameId, false)
 
     Test.moveTime(by: 61.0)
     processRound(gameId)
 
-    // Game should be complete with one winner
+    // With 1 YES and 1 NO, it's a tie - both survive
+    // Game should be complete with both as winners (only 2 players)
     let gameState = getGameState(gameId)
     Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
 
     let activePlayers = getActivePlayers(gameId)
-    Test.assertEqual(1, activePlayers.length)
+    Test.assertEqual(2, activePlayers.length)  // Both are winners in a 2-player tie
 }
 
 // ========== Scenario C: Maximum Capacity Game ==========
@@ -224,6 +220,7 @@ access(all) fun testScenarioD_NonVoterElimination() {
     processRound(gameId)
 
     // Charlie and Dave should be eliminated, Alice and Bob survive (tie)
+    // Game should end with Alice and Bob as winners (only 2 players left)
     let activePlayers = getActivePlayers(gameId)
     Test.assertEqual(2, activePlayers.length)
     Test.assert(activePlayers.contains(alice!.address))
@@ -231,20 +228,15 @@ access(all) fun testScenarioD_NonVoterElimination() {
     Test.assert(!activePlayers.contains(charlie!.address))
     Test.assert(!activePlayers.contains(dave!.address))
 
-    // Round 2: Alice votes, Bob doesn't
-    submitVote(alice!, gameId, true)
-    // Bob doesn't vote - eliminated
-
-    Test.moveTime(by: 61.0)
-    processRound(gameId)
-
-    // Alice wins
+    // Game should have ended (less than 3 players)
     let finalState = getGameState(gameId)
     Test.assertEqual(4 as UInt8, finalState["state"] as! UInt8) // Complete state
 
-    let winner = getActivePlayers(gameId)
-    Test.assertEqual(1, winner.length)
-    Test.assertEqual(alice!.address, winner[0])
+    // Both Alice and Bob are winners
+    let winners = getActivePlayers(gameId)
+    Test.assertEqual(2, winners.length)
+    Test.assert(winners.contains(alice!.address))
+    Test.assert(winners.contains(bob!.address))
 }
 
 // ========== Scenario E: Tie Scenarios ==========
@@ -378,10 +370,11 @@ access(all) fun submitVote(_ player: Test.TestAccount, _ gameId: UInt64, _ vote:
 access(all) fun processRound(_ gameId: UInt64) {
     let code = Test.readFile("../transactions/ProcessRound.cdc")
 
+    // Use any account as the signer (alice for consistency)
     let tx = Test.Transaction(
         code: code,
-        authorizers: [],
-        signers: [],
+        authorizers: [alice!.address],
+        signers: [alice!],
         arguments: [gameId]
     )
 
@@ -401,4 +394,15 @@ access(all) fun getGameState(_ gameId: UInt64): {String: AnyStruct} {
 access(all) fun getActivePlayers(_ gameId: UInt64): [Address] {
     let gameState = getGameState(gameId)
     return gameState["activePlayers"] as! [Address]
+}
+
+access(all) fun getRoundResults(_ gameId: UInt64, _ round: UInt32): [{String: AnyStruct}]? {
+    let code = Test.readFile("../scripts/GetRoundResults.cdc")
+
+    let result = Test.executeScript(code, [gameId])
+    if result.status != Test.ResultStatus.succeeded {
+        return nil
+    }
+
+    return result.returnValue as? [{String: AnyStruct}]
 }

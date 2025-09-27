@@ -13,7 +13,9 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
    - Majority voters are eliminated
    - Non-voters are automatically eliminated
    - In case of a tie (equal YES/NO votes), all voters survive
-4. **Victory**: Last remaining player wins the entire prize pool
+4. **Victory**: Game ends when fewer than 3 players remain
+   - Can have 0, 1, or 2 winners
+   - Prize pool is split equally among winners
 5. **Edge Cases**: If all players are eliminated, no winner is declared
 
 ### Game States
@@ -25,7 +27,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 
 ## Test Scenarios - Full Game Simulations
 
-### Scenario A: Classic 5-Player Game
+### Scenario A: Classic 5-Player Game ✅ IMPLEMENTED
 **Setup:**
 - 5 players (Alice, Bob, Charlie, Dave, Eve)
 - Entry fee: 10 FLOW each
@@ -40,19 +42,18 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Dave votes NO (minority)
 - Eve votes NO (minority)
 - Result: Dave and Eve survive, others eliminated
+- **Game ends**: Only 2 players remain, both are winners
 
-**Round 2:**
-- Dave votes YES (minority)
-- Eve votes NO
-- Result: Dave wins 50 FLOW
+**Actual Result:**
+- Dave and Eve both win (split 50 FLOW)
+- Game completes after 1 round
 
 **Validations:**
 - Event emissions for each player join
 - Round start events
 - Vote submission events
 - Elimination events with correct reasons
-- Game completion event with winner
-- Prize claim successful
+- Game completion event with 2 winners
 - Player profiles updated correctly
 
 ### Scenario B: Minimum Player Game (2 Players)
