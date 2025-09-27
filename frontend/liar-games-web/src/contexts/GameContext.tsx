@@ -503,13 +503,34 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           import FungibleToken from 0xFungibleToken
 
           transaction(gameId: UInt64) {
-            prepare(signer: auth(BorrowValue, InsertValue) &Account) {
-              let vault = signer.storage.borrow<auth(FungibleToken.Deposit) &FlowToken.Vault>(
-                from: /storage/flowTokenVault
-              ) ?? panic("Could not borrow FlowToken vault")
+            let winnerAddress: Address
+            let receiverRef: &{FungibleToken.Receiver}
 
-              let prize <- MinorityRuleGame.claimPrize(gameId: gameId, winner: signer.address)
-              vault.deposit(from: <-prize)
+            prepare(signer: auth(BorrowValue) &Account) {
+              self.winnerAddress = signer.address
+
+              // Get reference to winner's FlowToken receiver
+              self.receiverRef = signer.capabilities.borrow<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+                  ?? panic("Could not borrow reference to receiver")
+            }
+
+            execute {
+              // Get reference to the game
+              let game = MinorityRuleGame.borrowGame(gameId)
+                  ?? panic("Game does not exist")
+
+              // Claim the prize
+              let prize <- game.claimPrize(winner: self.winnerAddress)
+              let prizeAmount = prize.balance
+
+              // Deposit prize into winner's vault
+              self.receiverRef.deposit(from: <- prize)
+
+              log("Winner ".concat(self.winnerAddress.toString())
+                  .concat(" claimed prize of ")
+                  .concat(prizeAmount.toString())
+                  .concat(" FLOW from game ")
+                  .concat(gameId.toString()))
             }
           }
         `,
@@ -540,8 +561,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           import MinorityRuleGame from 0xMinorityRuleGame
 
           transaction(gameId: UInt64) {
+            let signerAddress: Address
+
             prepare(signer: auth(Storage) &Account) {
-              // Can be called by anyone after deadline
+              self.signerAddress = signer.address
             }
 
             execute {
@@ -549,12 +572,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               let game = MinorityRuleGame.borrowGame(gameId)
                   ?? panic("Game does not exist")
 
-              // Process the round (will fail if deadline not reached)
-              game.processRound()
-
-              log("Processed round ".concat(game.currentRound.toString())
-                  .concat(" for game ")
-                  .concat(gameId.toString()))
+              // Check if the signer is the creator
+              if game.creator == self.signerAddress {
+                  // Creator can process anytime
+                  game.processRoundAsCreator(creator: self.signerAddress)
+                  log("Creator processed round ".concat(game.currentRound.toString())
+                      .concat(" for game ")
+                      .concat(gameId.toString()))
+              } else {
+                  // Regular processing (requires deadline to be reached)
+                  game.processRound()
+                  log("Processed round ".concat(game.currentRound.toString())
+                      .concat(" for game ")
+                      .concat(gameId.toString())
+                      .concat(" after deadline"))
+              }
             }
           }
         `,
