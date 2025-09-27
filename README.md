@@ -1,193 +1,299 @@
-## 👋 Welcome Flow Developer!
+# 🎮 Liar Games - Minority Rule Game on Flow Blockchain
 
-This project is a starting point for you to develop smart contracts on the Flow Blockchain. It comes with example contracts, scripts, transactions, and tests to help you get started.
+A decentralized social deduction game built on Flow blockchain where players must vote with the minority to survive elimination rounds and win the prize pool.
 
-## 🔨 Getting Started
+## 🎯 Overview
 
-Here are some essential resources to help you hit the ground running:
+Liar Games is an on-chain implementation of the Minority Rule Game where players compete by trying to vote with the minority group. In each round, players vote YES or NO on a question. The majority voters are eliminated while minority voters survive to the next round. The last remaining players split the prize pool.
 
-- **[Flow Documentation](https://developers.flow.com/)** - The official Flow Documentation is a great starting point to start learning about about [building](https://developers.flow.com/build/flow) on Flow.
-- **[Cadence Documentation](https://cadence-lang.org/docs/language)** - Cadence is the native language for the Flow Blockchain. It is a resource-oriented programming language that is designed for developing smart contracts.  The documentation is a great place to start learning about the language.
-- **[Visual Studio Code](https://code.visualstudio.com/)** and the **[Cadence Extension](https://marketplace.visualstudio.com/items?itemName=onflow.cadence)** - It is recommended to use the Visual Studio Code IDE with the Cadence extension installed.  This will provide syntax highlighting, code completion, and other features to support Cadence development.
-- **[Flow Clients](https://developers.flow.com/tools/clients)** - There are clients available in multiple languages to interact with the Flow Blockchain.  You can use these clients to interact with your smart contracts, run transactions, and query data from the network.
-- **[Block Explorers](https://developers.flow.com/ecosystem/block-explorers)** - Block explorers are tools that allow you to explore on-chain data.  You can use them to view transactions, accounts, events, and other information.  [Flowser](https://flowser.dev/) is a powerful block explorer for local development on the Flow Emulator.
+### Key Features
 
-## 📦 Project Structure
+- **Immediate Start**: Games begin instantly with the creator as the first player - no waiting in lobbies
+- **Real-time FLOW Balance**: Live balance updates showing your FLOW tokens
+- **Decentralized Prize Pool**: All entry fees stored in smart contract vault
+- **Transparent Voting**: Votes are revealed simultaneously after deadline
+- **Fair Distribution**: Winners split the prize pool equally
+- **On-chain History**: Complete game history stored on blockchain
 
-Your project has been set up with the following structure:
+## 🎲 Game Mechanics
 
-- `flow.json` - This is the configuration file for your project (analogous to a `package.json` file for NPM).  It has been initialized with a basic configuration and your selected Core Contract dependencies to get started.
+1. **Game Creation**: Creator sets entry fee, round duration, and question
+2. **Joining**: Players join by paying the entry fee (Round 1 only)
+3. **Voting Phase**: Players vote YES or NO on the question
+4. **Round Processing**: After deadline, votes are revealed
+5. **Elimination**: Majority voters are eliminated, minority survives
+6. **Special Cases**:
+   - Tie votes: All players survive
+   - Unanimous votes: All players survive
+7. **Game End**: When fewer than 3 players remain
+8. **Prize Claim**: Winners claim their share of the prize pool
 
-  Your project has also been configured with the following dependencies.  You can add more dependencies using the `flow deps add` command:
-    - `FlowToken`
-    - `FungibleToken`
-    - `ViewResolver`
-    - `Burner`
-    - `MetadataViews`
-    - `NonFungibleToken`
-    - `FungibleTokenMetadataViews`
+## 🛠 Tech Stack
 
-- `/cadence` - This is where your Cadence smart contracts code lives
+- **Blockchain**: Flow Blockchain
+- **Smart Contracts**: Cadence
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Wallet Integration**: Flow Client Library (FCL)
+- **Styling**: Tailwind CSS
+- **Token**: FLOW (native token)
 
-Inside the `cadence` folder you will find:
-- `/contracts` - This folder contains your Cadence contracts (these are deployed to the network and contain the business logic for your application)
-  - `Counter.cdc`
-- `/scripts` - This folder contains your Cadence scripts (read-only operations)
-  - `GetCounter.cdc`
-- `/transactions` - This folder contains your Cadence transactions (state-changing operations)
-  - `IncrementCounter.cdc`
-- `/tests` - This folder contains your Cadence tests (integration tests for your contracts, scripts, and transactions to verify they behave as expected)
-  - `Counter_test.cdc`
+## 📋 Prerequisites
 
-## Running the Existing Project
+- [Flow CLI](https://developers.flow.com/tools/flow-cli/install) (v1.0+)
+- [Node.js](https://nodejs.org/) (v18+)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 
-### Executing the `GetCounter` Script
+## 🚀 Quick Start
 
-To run the `GetCounter` script, use the following command:
+### 1. Clone the Repository
 
-```shell
-flow scripts execute cadence/scripts/GetCounter.cdc
+```bash
+git clone https://github.com/yourusername/liar_games.git
+cd liar_games
 ```
 
-### Sending the `IncrementCounter` Transaction
+### 2. Start Flow Emulator
 
-To run the `IncrementCounter` transaction, use the following command:
+```bash
+# Terminal 1: Start the Flow emulator
+flow emulator start
 
-```shell
-flow transactions send cadence/transactions/IncrementCounter.cdc
+# Terminal 2: Start the dev wallet (optional, for UI wallet)
+flow dev-wallet
 ```
 
-To learn more about using the CLI, check out the [Flow CLI Documentation](https://developers.flow.com/tools/flow-cli).
+### 3. Deploy Smart Contracts
 
-## 👨‍💻 Start Developing
-
-### Creating a New Contract
-
-To add a new contract to your project, run the following command:
-
-```shell
-flow generate contract
+```bash
+# Deploy contracts to emulator
+flow project deploy --network emulator
 ```
 
-This command will create a new contract file and add it to the `flow.json` configuration file.
+### 4. Setup Frontend
 
-### Creating a New Script
+```bash
+# Navigate to frontend directory
+cd frontend/liar-games-web
 
-To add a new script to your project, run the following command:
+# Install dependencies
+npm install
 
-```shell
-flow generate script
+# Create environment file
+cp .env.example .env.local
+
+# Start development server
+npm run dev
 ```
 
-This command will create a new script file.  Scripts are used to read data from the blockchain and do not modify state (i.e. get the current balance of an account, get a user's NFTs, etc).
+### 5. Access the Application
 
-You can import any of your own contracts or installed dependencies in your script file using the `import` keyword.  For example:
+- **Frontend**: http://localhost:3000
+- **Dev Wallet**: http://localhost:8701
 
-```cadence
-import "Counter"
+## 📝 Smart Contract Architecture
+
+### Main Contract: `MinorityRuleGame.cdc`
+
+The contract manages all game logic with the following key components:
+
+#### Resources
+- **Game**: Individual game instance with embedded FlowToken vault
+- **Player**: Struct tracking player state and voting history
+
+#### State Machine
+```
+created → active → votingOpen ↔ processingRound → complete
+                       ↑_______________|
 ```
 
-### Creating a New Transaction
+#### Key Functions
+- `createGame()`: Create new game instance with entry fee
+- `joinGame()`: Join existing game (Round 1 only)
+- `submitVote()`: Submit YES/NO vote for current round
+- `processRound()`: Process round results after deadline
+- `processRoundAsCreator()`: Creator bypass for immediate processing
+- `claimPrize()`: Claim winner's prize share
 
-To add a new transaction to your project you can use the following command:
+## 🎮 Frontend Architecture
 
-```shell
-flow generate transaction
+### Core Components
+
+```
+src/
+├── app/                    # Next.js app router pages
+│   ├── page.tsx           # Home page with game list
+│   └── game/[gameId]/     # Individual game page
+├── components/
+│   ├── Navbar.tsx         # Navigation with wallet & balance
+│   ├── GameList.tsx       # List of all games
+│   ├── CreateGame.tsx     # Game creation form
+│   └── RoundTimer.tsx     # Countdown timer
+├── contexts/
+│   ├── AuthContext.tsx    # Wallet authentication & balance
+│   └── GameContext.tsx    # Game state management
+└── lib/
+    └── flow/
+        └── config.ts      # FCL configuration
 ```
 
-This command will create a new transaction file.  Transactions are used to modify the state of the blockchain (i.e purchase an NFT, transfer tokens, etc).
+### State Management
 
-You can import any dependencies as you would in a script file.
-
-### Creating a New Test
-
-To add a new test to your project you can use the following command:
-
-```shell
-flow generate test
-```
-
-This command will create a new test file.  Tests are used to verify that your contracts, scripts, and transactions are working as expected.
-
-### Installing External Dependencies
-
-If you want to use external contract dependencies (such as NonFungibleToken, FlowToken, FungibleToken, etc.) you can install them using [Flow CLI Dependency Manager](https://developers.flow.com/tools/flow-cli/dependency-manager).
-
-For example, to install the NonFungibleToken contract you can use the following command:
-
-```shell
-flow deps add mainnet://1d7e57aa55817448.NonFungibleToken
-```
-
-Contracts can be found using [ContractBrowser](https://contractbrowser.com/), but be sure to verify the authenticity before using third-party contracts in your project.
+- **AuthContext**: Handles wallet connection and FLOW balance
+- **GameContext**: Manages game data and blockchain interactions
 
 ## 🧪 Testing
 
-To verify that your project is working as expected you can run the tests using the following command:
+The project includes comprehensive test coverage:
 
-```shell
-flow test
+```bash
+# Run all tests
+flow test --cover
+
+# Run specific test file
+flow test cadence/tests/MinorityRuleGame_test.cdc
+
+# Generate coverage report
+flow test --cover --coverprofile=coverage.lcov
 ```
 
-This command will run all tests with the `_test.cdc` suffix (these can be found in the `cadence/tests` folder). You can add more tests here using the `flow generate test` command (or by creating them manually).
+### Test Structure
+- **Unit Tests**: Basic contract functions
+- **Simulation Tests**: Complete game scenarios
+- **Emulator Tests**: Real blockchain environment
 
-To learn more about testing in Cadence, check out the [Cadence Test Framework Documentation](https://cadence-lang.org/docs/testing-framework).
+## 📜 Available Scripts
 
-## 🚀 Deploying Your Project
-
-To deploy your project to the Flow network, you must first have a Flow account and have configured your deployment targets in the `flow.json` configuration file.
-
-You can create a new Flow account using the following command:
-
-```shell
-flow accounts create
+### Backend (Cadence)
+```bash
+flow emulator start           # Start local blockchain
+flow project deploy           # Deploy contracts
+flow test                     # Run tests
+flow scripts execute [script] # Run scripts
+flow transactions send [tx]   # Send transactions
 ```
 
-Learn more about setting up deployment targets in the [Flow CLI documentation](https://developers.flow.com/tools/flow-cli/deployment/project-contracts).
-
-### Deploying to the Flow Emulator
-
-To deploy your project to the Flow Emulator, start the emulator using the following command:
-
-```shell
-flow emulator --start
+### Frontend (Next.js)
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run linter
 ```
 
-To deploy your project, run the following command:
+## 🔧 Configuration
 
-```shell
-flow project deploy --network=emulator
+### Environment Variables
+
+Create `.env.local` in the frontend directory:
+
+```env
+# Network configuration (emulator|testnet|mainnet)
+NEXT_PUBLIC_FLOW_NETWORK=emulator
+
+# Flow Access Node
+NEXT_PUBLIC_FLOW_ACCESS_NODE=http://localhost:8888
+
+# Contract addresses
+NEXT_PUBLIC_MINORITY_RULE_GAME_ADDRESS=0xf8d6e0586b0a20c7
 ```
 
-This command will start the Flow Emulator and deploy your project to it. You can now interact with your project using the Flow CLI or alternate [client](https://developers.flow.com/tools/clients).
+### Flow Configuration
 
-### Deploying to Flow Testnet
+The `flow.json` file contains:
+- Contract deployments
+- Account configurations
+- Network settings
+- Dependencies
 
-To deploy your project to Flow Testnet you can use the following command:
+## 🚢 Deployment
 
-```shell
-flow project deploy --network=testnet
+### Emulator (Local)
+```bash
+flow emulator start
+flow project deploy --network emulator
 ```
 
-This command will deploy your project to Flow Testnet. You can now interact with your project on this network using the Flow CLI or any other Flow client.
-
-### Deploying to Flow Mainnet
-
-To deploy your project to Flow Mainnet you can use the following command:
-
-```shell
-flow project deploy --network=mainnet
+### Testnet
+```bash
+flow project deploy --network testnet
 ```
 
-This command will deploy your project to Flow Mainnet. You can now interact with your project using the Flow CLI or alternate [client](https://developers.flow.com/tools/clients).
+### Mainnet
+```bash
+flow project deploy --network mainnet
+```
 
-## 📚 Other Resources
+## 📚 API Reference
 
-- [Cadence Design Patterns](https://cadence-lang.org/docs/design-patterns)
-- [Cadence Anti-Patterns](https://cadence-lang.org/docs/anti-patterns)
-- [Flow Core Contracts](https://developers.flow.com/build/core-contracts)
+### Transactions
 
-## 🤝 Community
-- [Flow Community Forum](https://forum.flow.com/)
-- [Flow Discord](https://discord.gg/flow)
-- [Flow Twitter](https://x.com/flow_blockchain)
+| Transaction | Description | Parameters |
+|------------|-------------|------------|
+| `CreateGame` | Create new game | `entryFee`, `roundDuration`, `questionText` |
+| `JoinGame` | Join existing game | `gameId`, `entryFee` |
+| `SubmitVote` | Submit vote | `gameId`, `vote` |
+| `ProcessRound` | Process round results | `gameId` |
+| `ClaimPrize` | Claim winner prize | `gameId` |
+
+### Scripts (Read-only)
+
+| Script | Description | Returns |
+|--------|-------------|---------|
+| `GetAllGames` | List all game IDs | `[UInt64]` |
+| `GetGameInfo` | Get game details | `GameInfo` |
+| `GetGameState` | Get current state | `GameState` |
+| `HasPlayerVoted` | Check vote status | `Bool` |
+| `GetFlowBalance` | Get FLOW balance | `UFix64` |
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow existing code style and conventions
+- Write tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+
+## 🐛 Known Issues
+
+- Emulator time may lag behind real time, use creator bypass for testing
+- Balance updates may take a few seconds to reflect
+- Maximum players per game limited by gas constraints
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Flow Team for blockchain infrastructure
+- Cadence community for smart contract patterns
+- ETHDenver hackathon for the opportunity
+
+## 📞 Contact & Support
+
+- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/liar_games/issues)
+- **Flow Discord**: [Join the community](https://discord.gg/flow)
+- **Documentation**: [Flow Docs](https://developers.flow.com/)
+
+## 🚀 Roadmap
+
+- [ ] Mobile responsive design improvements
+- [ ] Multiple game modes (different voting mechanics)
+- [ ] Tournament system
+- [ ] Leaderboard and statistics
+- [ ] NFT rewards for winners
+- [ ] Custom token support
+- [ ] Social features (chat, profiles)
+
+---
+
+Built with ❤️ on Flow Blockchain
