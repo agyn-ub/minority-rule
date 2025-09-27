@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Game, GameState } from '@/types/game';
 import fcl, { initializeFCL } from '@/lib/flow/config';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface GameContextType {
   games: Game[];
@@ -42,6 +43,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const { fetchBalance } = useAuth();
 
   // Initialize FCL on mount
   useEffect(() => {
@@ -339,13 +341,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       await fcl.tx(transactionId).onceSealed();
       await fetchGames();
+      await fetchBalance(); // Refresh balance after creating game
     } catch (err) {
       console.error('Error creating game:', err);
       setError('Failed to create game');
     } finally {
       setIsLoading(false);
     }
-  }, [fetchGames, isInitialized]);
+  }, [fetchGames, isInitialized, fetchBalance]);
 
   const joinGame = useCallback(async (gameId: string, entryFee?: string) => {
     if (!isInitialized) {
@@ -423,6 +426,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       await fcl.tx(transactionId).onceSealed();
       await fetchGames(); // Refresh all games
       await fetchGameById(gameId);
+      await fetchBalance(); // Refresh balance after joining game
     } catch (err: any) {
       console.error('Error joining game:', err);
       // Check if it's an "already joined" error (shouldn't happen with pre-check, but just in case)
@@ -540,13 +544,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       await fcl.tx(transactionId).onceSealed();
       await fetchGameById(gameId);
+      await fetchBalance(); // Refresh balance after claiming prize
     } catch (err) {
       console.error('Error claiming prize:', err);
       setError('Failed to claim prize');
     } finally {
       setIsLoading(false);
     }
-  }, [fetchGameById, isInitialized]);
+  }, [fetchGameById, isInitialized, fetchBalance]);
 
   const processRound = useCallback(async (gameId: string) => {
     if (!isInitialized) {

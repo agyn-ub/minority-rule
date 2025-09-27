@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navbar() {
-  const { user, logIn, logOut } = useAuth();
+  const { user, balance, logIn, logOut } = useAuth();
 
   return (
     <nav className="bg-gray-900 border-b border-gray-800">
@@ -19,6 +19,11 @@ export default function Navbar() {
                 <span className="text-gray-300 text-sm">
                   {user.addr.slice(0, 6)}...{user.addr.slice(-4)}
                 </span>
+                {balance !== null && (
+                  <span className="text-green-400 text-sm font-medium">
+                    {balance} FLOW
+                  </span>
+                )}
                 <button
                   onClick={logOut}
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
