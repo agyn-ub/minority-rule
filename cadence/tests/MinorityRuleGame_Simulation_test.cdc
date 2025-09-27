@@ -56,8 +56,6 @@ access(all) fun testScenarioA_Classic5PlayerGame() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 3,
-        maxPlayers: 10,
         question: "Will the minority survive?"
     )
 
@@ -105,8 +103,6 @@ access(all) fun testScenarioB_MinimumPlayerGame() {
         creator: alice!.address,
         entryFee: 20.0,
         roundDuration: 60.0,
-        minPlayers: 2,
-        maxPlayers: 5,
         question: "Quick duel?"
     )
 
@@ -136,8 +132,6 @@ access(all) fun testScenarioC_MaximumCapacityGame() {
         creator: alice!.address,
         entryFee: 5.0,
         roundDuration: 60.0,
-        minPlayers: 5,
-        maxPlayers: 10,
         question: "Max capacity test?"
     )
 
@@ -198,8 +192,6 @@ access(all) fun testScenarioD_NonVoterElimination() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 2,
-        maxPlayers: 5,
         question: "Will you vote?"
     )
 
@@ -245,8 +237,6 @@ access(all) fun testScenarioE_TieScenarios() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 2,
-        maxPlayers: 6,
         question: "Tie or not tie?"
     )
 
@@ -304,8 +294,6 @@ access(all) fun testScenarioF_SingleSurvivorPath() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 3,
-        maxPlayers: 10,
         question: "Progressive elimination?"
     )
 
@@ -346,8 +334,6 @@ access(all) fun testScenarioH_EarlyGameEnd() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 3,
-        maxPlayers: 10,
         question: "Quick resolution?"
     )
 
@@ -390,8 +376,6 @@ access(all) fun testScenarioG_NoWinners() {
         creator: player1!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 3,
-        maxPlayers: 10,
         question: "Will anyone vote?"
     )
 
@@ -427,8 +411,6 @@ access(all) fun testScenarioI_UnanimousVoting() {
         creator: player1!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 3,
-        maxPlayers: 10,
         question: "Will everyone vote the same?"
     )
 
@@ -496,17 +478,15 @@ access(all) fun createGame(
     creator: Address,
     entryFee: UFix64,
     roundDuration: UFix64,
-    minPlayers: UInt32,
-    maxPlayers: UInt32,
     question: String
 ): UInt64 {
-    let code = "import MinorityRuleGame from ".concat(contractAddress!.toString()).concat("\n\ntransaction(creator: Address, entryFee: UFix64, roundDuration: UFix64, minPlayers: UInt32, maxPlayers: UInt32, questionText: String) {\n    execute {\n        let gameId = MinorityRuleGame.createGame(\n            creator: creator,\n            entryFee: entryFee,\n            roundDuration: roundDuration,\n            minPlayers: minPlayers,\n            maxPlayers: maxPlayers,\n            questionText: questionText\n        )\n    }\n}")
+    let code = "import MinorityRuleGame from ".concat(contractAddress!.toString()).concat("\n\ntransaction(creator: Address, entryFee: UFix64, roundDuration: UFix64, questionText: String) {\n    execute {\n        let gameId = MinorityRuleGame.createGame(\n            creator: creator,\n            entryFee: entryFee,\n            roundDuration: roundDuration,\n            questionText: questionText\n        )\n    }\n}")
 
     let tx = Test.Transaction(
         code: code,
         authorizers: [],
         signers: [],
-        arguments: [creator, entryFee, roundDuration, minPlayers, maxPlayers, question]
+        arguments: [creator, entryFee, roundDuration, question]
     )
 
     let result = Test.executeTransaction(tx)

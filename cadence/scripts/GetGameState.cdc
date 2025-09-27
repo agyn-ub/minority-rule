@@ -20,8 +20,6 @@ access(all) fun main(gameId: UInt64): {String: AnyStruct}? {
         "creator": gameRef.creator,
         "entryFee": gameRef.entryFee,
         "roundDuration": gameRef.roundDuration,
-        "minPlayers": gameRef.minPlayers,
-        "maxPlayers": gameRef.maxPlayers,
         "questionText": gameRef.questionText,
         "state": gameRef.state.rawValue,
         "currentRound": gameRef.currentRound,

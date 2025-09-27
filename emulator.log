@@ -1,0 +1,387 @@
+[90m6:45PM[0m [32mINF[0m ⚙️ Using service account 0xf8d6e0586b0a20c7  [36mserviceAddress=[0mf8d6e0586b0a20c7 [36mserviceHashAlgo=[0mSHA3_256 [36mservicePrivKey=[0m0803a31189ce749f5c2c664cdd5110206e477471cafbdf8b9b5bd12020c47602 [36mservicePubKey=[0mc9fb11ea78933d207a04355a5df06a7500fc623bbc6dec1fe65e2bbc2f9167bea294a691e7ee3cbdd7d8614e49d9557aca6408ce4e8385b5e8f14ef1d27c709a [36mserviceSigAlgo=[0mECDSA_P256
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mBurner=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mCrossVMMetadataViews=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mCrypto=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mEVM=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowCallbackScheduler=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowClusterQC=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowDKG=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowEpoch=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowFees=[0m0xe5a8b7f23e8b548f
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowIDTableStaking=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowServiceAccount=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowStorageFees=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFlowToken=[0m0x0ae53cb6e3f42a79
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFungibleToken=[0m0xee82856bf20e2aa6
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFungibleTokenMetadataViews=[0m0xee82856bf20e2aa6
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mFungibleTokenSwitchboard=[0m0xee82856bf20e2aa6
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mMetadataViews=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mMigration=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mNodeVersionBeacon=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mNonFungibleToken=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mRandomBeaconHistory=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 📜 Flow contract                              [36mViewResolver=[0m0xf8d6e0586b0a20c7
+[90m6:45PM[0m [32mINF[0m 🌱 Starting gRPC server on port 3569          [36mport=[0m3569
+[90m6:45PM[0m [32mINF[0m 🌱 Starting REST API on port 8888             [36mport=[0m8888
+[90m6:45PM[0m [32mINF[0m 🌱 Starting admin server on port 8080         [36mport=[0m8080
+[90m6:45PM[0m [32mINF[0m 🌱 Starting debugger on port 2345             [36mport=[0m2345
+[90m6:45PM[0m [32mINF[0m ✅  Started admin server on port 8080         [36mport=[0m8080
+[90m6:45PM[0m [32mINF[0m ✅  Started gRPC server on port 3569          [36mport=[0m3569
+[90m6:45PM[0m [32mINF[0m ✅  Started REST API server on port 8888      [36mport=[0m8888
+[90m6:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m6:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m6:45PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m0 [36mblockID=[0me2b0ef51ee9b7be636c118e4550c67b4e9b97cb982506e6e47c4431c3e88cd23
+[90m6:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m6:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m6:45PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m6e308158808c95a59bf777f3096e59132dc5b17afc6cd72b294279a7e4d34289
+[90m6:45PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m28 [36mmemoryEstimate=[0m10548234 [36mtxID=[0m6e308158808c95a59bf777f3096e59132dc5b17afc6cd72b294279a7e4d34289
+[90m6:45PM[0m DBG [1;32mEVT[0m [2m[6e3081][0m flow.AccountContractAdded: 0xd155d0590f6176b2954c7f35da989d01aedbfee674dd100dd2992a76433c335a
+[90m6:45PM[0m DBG 📦 Block #1 committed                         [36mblockHeight=[0m1 [36mblockID=[0m9823d0e122b085b4d9ccf4ab4a6c1671aa02b31cf3a3a29a5cbcf41749d3346d
+[90m6:45PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m6e308158808c95a59bf777f3096e59132dc5b17afc6cd72b294279a7e4d34289
+[90m6:52PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m1 [36mblockID=[0m9823d0e122b085b4d9ccf4ab4a6c1671aa02b31cf3a3a29a5cbcf41749d3346d
+[90m6:52PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf8d6e0586b0a20c7 [36mheight=[0m1
+[90m6:52PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m1 [36mblockID=[0m9823d0e122b085b4d9ccf4ab4a6c1671aa02b31cf3a3a29a5cbcf41749d3346d
+[90m6:52PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m1 [36mblockID=[0m9823d0e122b085b4d9ccf4ab4a6c1671aa02b31cf3a3a29a5cbcf41749d3346d
+[90m6:52PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf8d6e0586b0a20c7 [36mheight=[0m1
+[90m6:52PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m6ed4f11a58f983eaefd4c82246f473ede8dced175ab4df3ab21a0009d7855d6d
+[90m6:52PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m55 [36mmemoryEstimate=[0m1301536 [36mtxID=[0m6ed4f11a58f983eaefd4c82246f473ede8dced175ab4df3ab21a0009d7855d6d
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0xe54f97e62bbc0b472cd72e390d38e966406b471997e29db430f11c69e271f326
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.0ae53cb6e3f42a79.FlowToken.TokensWithdrawn: 0x12e5d2a6fdf72f443f625b2524dfb95c937f1f8661f33855050e300b8f44265c
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0xe972ab87d3e63fa203ea8f4c417dca274df1c3309a945a783017497b4b677dd0
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x9c8df4b101f84ee0c122f5a21b4a5d76246434f90fec9c26dc6955ca03dae1fa
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x3d6ea6458c26319ac5e03ac88720c44066059c82492737cbe699a6066115401f
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.e5a8b7f23e8b548f.FlowFees.TokensDeposited: 0x9b0016e35f2c5e2a5274724e841d4c2b16290bd0a82ebd9f66e102cac71ab0d5
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.StorageCapabilityControllerIssued: 0x771d6075d08fa3cadb60d7ad03f68a9a7160c21a058530a2696e21f2d25f9310
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.CapabilityPublished: 0xffbc06ecc0e6dad186f334fbc19324b88fa5dce95960cc97f740960ae852e9a8
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.StorageCapabilityControllerIssued: 0xce073ed74414a2b4fa01b0e23beb842c803893be6387efb0ee9778e8f4b7ad18
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.CapabilityPublished: 0x12aa9600a6ae0ffe56428a3113a17e88789043bb6f88ab936eeacc542a985875
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x42083569a9b4afd6b7095b1edca25c62e6fb507b6f7b0a034de45efb4b39e95b
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x763bdff205ab4e75a8050bcbbf234521b4015a812f7df1334e98151bf8a17525
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.AccountCreated: 0x06bdca02b1af6eaacee1155417c4f24eb815b7cc1becf7f35f98d029030bcdd1
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.AccountKeyAdded: 0x654ba527ad4408c90a5579ef4793819d8d8d93ae487b08a8ad5e3065fedcbf4e
+[90m6:52PM[0m DBG [1;32mEVT[0m [2m[6ed4f1][0m flow.AccountContractAdded: 0x84777e33a5ab090c4f1e0ec92d7d9ea40578aa22705ee9c371ee10ee5a83b18b
+[90m6:52PM[0m DBG 📦 Block #2 committed                         [36mblockHeight=[0m2 [36mblockID=[0me04830736595d7f89fec861fb336589c05d8b0c5fe6ddf5319121891fd6cca39
+[90m6:52PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m6ed4f11a58f983eaefd4c82246f473ede8dced175ab4df3ab21a0009d7855d6d
+[90m6:52PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m2
+[90m6:52PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m172275 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m6:52PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m2 [36mblockID=[0me04830736595d7f89fec861fb336589c05d8b0c5fe6ddf5319121891fd6cca39
+[90m6:52PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf8d6e0586b0a20c7 [36mheight=[0m2
+[90m6:52PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m2
+[90m6:52PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m60 [36mmemoryEstimate=[0m9698204 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:52PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m2
+[90m6:52PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m60 [36mmemoryEstimate=[0m9698204 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m2
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m60 [36mmemoryEstimate=[0m9698204 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m2 [36mblockID=[0me04830736595d7f89fec861fb336589c05d8b0c5fe6ddf5319121891fd6cca39
+[90m6:53PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m2 [36mblockID=[0me04830736595d7f89fec861fb336589c05d8b0c5fe6ddf5319121891fd6cca39
+[90m6:53PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf8d6e0586b0a20c7 [36mheight=[0m2
+[90m6:53PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m8719d05ad4dd45987553ca3dc5358b94f7234e0ae89acc4ebef2352bd32b074c
+[90m6:53PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m52 [36mmemoryEstimate=[0m12000375 [36mtxID=[0m8719d05ad4dd45987553ca3dc5358b94f7234e0ae89acc4ebef2352bd32b074c
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0xb3f46a3e4815b9740785efefa282049a9d805a6d1311cca3ffb4173b37ba769c
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.TokensWithdrawn: 0x82b7fa9562804880c7b259aa5207d95ff23625022f0ad3e2db96ae7eccc48377
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0xf920f166b2b8ed69da95a887e2cb7fae14461cbe752aa41255dbd14b39d9c628
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x4eb3e1b6a74d1cdafcf319877321a21b835926d0e9d387714b759efb365643f4
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0xacd683ea78fd2b7df5a6e2b15affe478968ebc7b67c33924e6f424c982ee6b95
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.e5a8b7f23e8b548f.FlowFees.TokensDeposited: 0x7b3383b9c076b23fbf3275e4b78b27dd4fcd6ba4cfb892200351e1be577c4b36
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.StorageCapabilityControllerIssued: 0xcb379d69b0f259839b34d7a5c725f8ac8378d8a5dac1e6d13cec0d4147855521
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.CapabilityPublished: 0x5e99ea37c08c7e5e4cf3f15866debdba2d059243e623abcc0a66db011b74a250
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.StorageCapabilityControllerIssued: 0x8134f64564ca43b7c735cccf3fdcd92e05c3ab3d1bb8b0a9165cccad80f378ff
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.CapabilityPublished: 0x1c7f4ca1c350f1dfcd17297009cd6f27ee100af0312bf1027cae9684f9ff3d58
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x3214f295f22f6e7da6c3c4243a9dec0520af9fb33a51494902c9a78a2fe31c24
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x6fadf2004910f39958ad1f320696def41695dc40546f8ec868edfc6c8288f390
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.AccountCreated: 0x165b75c46a9addb332bf911266138cb9b1483cf4449bfd0571ccad6761cbf523
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m flow.AccountKeyAdded: 0x10031929cf17d34173b14c5253466e8d9d42fb86d3623edc29d0fa62ab140632
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.MinterCreated: 0xcea56a5de16be93f900cab102c4cb3860a9b3e0a61b055c039712b28e820bdb9
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.TokensMinted: 0x7ea6415177373e5b097791491c18472df961811ba584e4948d0c36c6b1fff7ce
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x63f82cb688a157466a26412f722649041396c3ab4030b3dc91c4863ae0432eaa
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[8719d0][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x07fe0900ff2a18a5ee383f2c73040ac65d72dc9ad99cdc3f1d86de07975ce012
+[90m6:53PM[0m DBG 📦 Block #3 committed                         [36mblockHeight=[0m3 [36mblockID=[0m675871f7e8b2308b1cefb4a1d196b8b6487949ef475dfc06b75599993ca8bdd5
+[90m6:53PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m8719d05ad4dd45987553ca3dc5358b94f7234e0ae89acc4ebef2352bd32b074c
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m3
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m3
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m180293 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m60 [36mmemoryEstimate=[0m9698204 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m3
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m28 [36mmemoryEstimate=[0m9469809 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m3 [36mblockID=[0m675871f7e8b2308b1cefb4a1d196b8b6487949ef475dfc06b75599993ca8bdd5
+[90m6:53PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m3 [36mblockID=[0m675871f7e8b2308b1cefb4a1d196b8b6487949ef475dfc06b75599993ca8bdd5
+[90m6:53PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf8d6e0586b0a20c7 [36mheight=[0m3
+[90m6:53PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0mfa53862e51e3f32a78dd8effc237aca5759f30d596d521f2b6335f4d7f0dcb08
+[90m6:53PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m54 [36mmemoryEstimate=[0m12028099 [36mtxID=[0mfa53862e51e3f32a78dd8effc237aca5759f30d596d521f2b6335f4d7f0dcb08
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0x787c32f1a57327e47f03ed4b3dc2d1c23773809387002e4d3bc1890e3f38c636
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.TokensWithdrawn: 0xf889897ab51b335ec58a8215f3d258e3e5647093f392544fcaf581cc7c3827fa
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.ee82856bf20e2aa6.FungibleToken.Withdrawn: 0xdcb4025d598600950bb5a4bfff4422023188a35a2a7ea04ce2fe2a3ab4dfa128
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x8a2c7d38dad7d3089b61849b6685e58bfc22e422e84bfd9125961c16808002ad
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x0188a51d30b328aa1dc06e8dbd8dd8bb4c1455c92a884325636ca5aee2e46918
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.e5a8b7f23e8b548f.FlowFees.TokensDeposited: 0xd7747f2e1deede4acb299869221360d309cde5e6ecd017d45ec1d3ceefb83882
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.StorageCapabilityControllerIssued: 0x2175ad4b86bee9021426f41c3c9abd75e87cab783ca5043fa3f313c3b5d76225
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.CapabilityPublished: 0xaba5839c9fb8c054cbb3e1d026228de84fe988436b32d31e399f2d2036504bac
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.StorageCapabilityControllerIssued: 0x8b8f6225685ab994abdc916471f2653ed0523835046beab705a67f040935f356
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.CapabilityPublished: 0x91d40a083d7715f70026fd14e2faf6614d2a69d15234e9ba6e46ea0dfa4a45ca
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0x6cba85efab1c9fb4a23c0a1fda0a932be20bde9dbb779c640890d27707c10173
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0x16a50cfa39c1f9d8903f85f9df0919cf1fd769d45c4c621950d2d7b3420732e1
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.AccountCreated: 0xb0945e79a1eef51127d9492b094e73725af138a0de9f4b49bbdb07842a7dcb65
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m flow.AccountKeyAdded: 0xf67c7e6d13dad8b3c1430d0ff94af89622c7274af489d4153d4f04976e5d5fa3
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.MinterCreated: 0x1b7778c2520f748ab3de0157764495e30e840a13afdfaa6f1664042c12bb7db6
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.TokensMinted: 0xabdab9572d5418f0f3e06072538372140e07b31edf0dd66c084e978a4a7fdddd
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.0ae53cb6e3f42a79.FlowToken.TokensDeposited: 0xa5cb54642f6e394652cc8fd6418ccd111ef0cdac97e4dbb5a602e3c5dc0fca78
+[90m6:53PM[0m DBG [1;32mEVT[0m [2m[fa5386][0m A.ee82856bf20e2aa6.FungibleToken.Deposited: 0xc25654420f25a2c28521ec2734e089d7fd72d0538ddcaa3278bbb1e299d557e4
+[90m6:53PM[0m DBG 📦 Block #4 committed                         [36mblockHeight=[0m4 [36mblockID=[0m1221c4d8cc5726fd012f514a6493aa88e39f3cd1b4ac2def3b095e86f2ecddc3
+[90m6:53PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0mfa53862e51e3f32a78dd8effc237aca5759f30d596d521f2b6335f4d7f0dcb08
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m4
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m4
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m4
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m189252 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m28 [36mmemoryEstimate=[0m9469809 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m62 [36mmemoryEstimate=[0m9703684 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:53PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m4
+[90m6:53PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m28 [36mmemoryEstimate=[0m9469809 [36mscriptID=[0m9c12359f8118b7287f96e8f44965c91c6a861185f6ff7d717e59a74dd940edf8
+[90m6:54PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m4 [36mblockID=[0m1221c4d8cc5726fd012f514a6493aa88e39f3cd1b4ac2def3b095e86f2ecddc3
+[90m6:54PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m4 [36mblockID=[0m1221c4d8cc5726fd012f514a6493aa88e39f3cd1b4ac2def3b095e86f2ecddc3
+[90m6:54PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf3fcd2c1a78f5eee [36mheight=[0m4
+[90m6:54PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m4
+[90m6:54PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m189252 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m6:54PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1
+[90m6:54PM[0m [33mWRN[0m ❗  Transaction reverted                      [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m3388070 [36mtxID=[0m96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1
+[90m6:54PM[0m [33mWRN[0m [1;31mERR[0m [2m[96fee4][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* transaction preprocess failed: [Error Code: 1101] cadence runtime error: Execution failed:
+error: too few arguments
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:14
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected at least 6, got 3; add the missing arguments to match the function signature
+
+  See documentation at: https://cadence-lang.org/docs/language/functions
+
+error: mismatched types
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:52
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                                     ^^^^^^^^ expected `Address`, got `UFix64`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: mismatched types
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:76
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                                                             ^^^^^^^^^^^^ expected `UFix64`, got `String`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: mismatched types
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:99
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                                                                                    ^^^^^^^^^^^^^^ expected `UFix64`, got `Address`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: incorrect argument label
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:42
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                           ^^^^^^^^^ expected `creator`, got `entryFee`; replace the current argument label
+
+  See documentation at: https://cadence-lang.org/docs/language/functions
+
+error: incorrect argument label
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:62
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                                               ^^^^^^^^^^^^^ expected `entryFee`, got `questionText`; replace the current argument label
+
+  See documentation at: https://cadence-lang.org/docs/language/functions
+
+error: incorrect argument label
+ --> 96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1:7:90
+  |
+7 |               MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+  |                                                                                           ^^^^^^^^ expected `roundDuration`, got `creator`; replace the current argument label
+
+  See documentation at: https://cadence-lang.org/docs/language/functions
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m6:54PM[0m DBG ❗  Transaction Signature Error               [36mauthorizers=[0m[f3fcd2c1a78f5eee] [36mgasLimit=[0m100 [36mpayer=[0mf3fcd2c1a78f5eee [36mproposer=[0mf3fcd2c1a78f5eee [36mproposerKeyIndex=[0m0
+[90m6:54PM[0m DBG 📦 Block #5 committed                         [36mblockHeight=[0m5 [36mblockID=[0m249738e3a646ee5a6c241d3d235dd8c5e16198f742a1a6eab89cf240c72a8a88
+[90m6:54PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m96fee4fd25bce1e852e017c1e98699fe56904797ed715721d5667d3e59ba1ce1
+[90m7:38PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:38PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:38PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m5 [36mblockID=[0m249738e3a646ee5a6c241d3d235dd8c5e16198f742a1a6eab89cf240c72a8a88
+[90m7:38PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:38PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:38PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0md322bb6d4ac111c7796b76531ae804ebc5c6eb68cfd757e222910f12dc4784f9
+[90m7:38PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m12 [36mmemoryEstimate=[0m13280297 [36mtxID=[0md322bb6d4ac111c7796b76531ae804ebc5c6eb68cfd757e222910f12dc4784f9
+[90m7:38PM[0m DBG [1;32mEVT[0m [2m[d322bb][0m flow.AccountContractUpdated: 0x91cf3a0199d2af33816109ef17c0bad07a4d9535bd457d6606a0c805bc6f9c9d
+[90m7:38PM[0m DBG 📦 Block #6 committed                         [36mblockHeight=[0m6 [36mblockID=[0m5c6c7544b3f19837f6d2964df5f29fd2d9e6ca67c9bed2056511a479c2c93a3f
+[90m7:38PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0md322bb6d4ac111c7796b76531ae804ebc5c6eb68cfd757e222910f12dc4784f9
+[90m7:39PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m6 [36mblockID=[0m5c6c7544b3f19837f6d2964df5f29fd2d9e6ca67c9bed2056511a479c2c93a3f
+[90m7:39PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m6 [36mblockID=[0m5c6c7544b3f19837f6d2964df5f29fd2d9e6ca67c9bed2056511a479c2c93a3f
+[90m7:39PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0mf3fcd2c1a78f5eee [36mheight=[0m6
+[90m7:39PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m6
+[90m7:39PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m189252 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m7:39PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m9f285a4440d9d11129c2673c21909df40ee1dde043f27daf0bc586a4b3843bd5
+[90m7:39PM[0m [32mINF[0m [1;34mLOG:[0m "Created game with ID: 1"   
+[90m7:39PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m29 [36mmemoryEstimate=[0m6690672 [36mtxID=[0m9f285a4440d9d11129c2673c21909df40ee1dde043f27daf0bc586a4b3843bd5
+[90m7:39PM[0m DBG [1;32mEVT[0m [2m[9f285a][0m A.f8d6e0586b0a20c7.MinorityRuleGame.GameCreated: 0x1935978cdbed7ded3ca4166ef854acdb75ecc0ebb9506d608e3e3a07289a967c
+[90m7:39PM[0m DBG 📦 Block #7 committed                         [36mblockHeight=[0m7 [36mblockID=[0mdc5a88e7cf0692e84c21fb8165a8aa2e472c9ff12a147282f7df21cc6d50a3e8
+[90m7:39PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m9f285a4440d9d11129c2673c21909df40ee1dde043f27daf0bc586a4b3843bd5
+[90m7:39PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m7 [36mblockID=[0mdc5a88e7cf0692e84c21fb8165a8aa2e472c9ff12a147282f7df21cc6d50a3e8
+[90m7:39PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m7
+[90m7:39PM[0m [33mWRN[0m ❗  Script reverted                           [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m3368110 [36mscriptID=[0m0afdaa17e1eb5bc224e72649fed3827c37dac395537a08d97e6f1f661126cc70
+[90m7:39PM[0m [33mWRN[0m [1;31mERR[0m [2m[0afdaa][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* [Error Code: 1101] cadence runtime error: Execution failed:
+error: value of type `&MinorityRuleGame` has no member `getAllGameIds`
+ --> 0afdaa17e1eb5bc224e72649fed3827c37dac395537a08d97e6f1f661126cc70:5:36
+  |
+5 |             return MinorityRuleGame.getAllGameIds()
+  |                                     ^^^^^^^^^^^^^ the member is not defined on the type; check for typos or if the member exists on the type
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m7:43PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:43PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:43PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m7 [36mblockID=[0mdc5a88e7cf0692e84c21fb8165a8aa2e472c9ff12a147282f7df21cc6d50a3e8
+[90m7:43PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:43PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:43PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0mf195d7ecbb31d17aca5334dbae6109e2a76e26a5680e3d263f6ba597ee6dd835
+[90m7:43PM[0m [33mWRN[0m ❗  Transaction reverted                      [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m10954391 [36mtxID=[0mf195d7ecbb31d17aca5334dbae6109e2a76e26a5680e3d263f6ba597ee6dd835
+[90m7:43PM[0m [33mWRN[0m [1;31mERR[0m [2m[f195d7][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* transaction execute failed: [Error Code: 1101] cadence runtime error: Execution failed:
+error: cannot deploy invalid contract
+ --> f195d7ecbb31d17aca5334dbae6109e2a76e26a5680e3d263f6ba597ee6dd835:3:2
+  |
+3 | 		signer.contracts.update(name: name, code: code.decodeHex())
+  | 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:145:27
+    |
+145 |             self.players = game.players.keys
+    |                            ^^^^^^^^^^^^^^^^^ expected `[Address]`, got `&[Address]`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:147:32
+    |
+147 |             self.roundHistory = game.roundHistory
+    |                                 ^^^^^^^^^^^^^^^^^ expected `[MinorityRuleGame.RoundResult]`, got `&[MinorityRuleGame.RoundResult]`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: missing initialization of field `state` in type `MinorityRuleGame.GameInfo`
+   --> f8d6e0586b0a20c7.MinorityRuleGame:116:24
+    |
+116 |         access(all) let state: String
+    |                         ^^^^^ all fields must be initialized when creating a composite type; add an initializer or provide a default value
+
+  See documentation at: https://cadence-lang.org/docs/language/types-and-type-system/composite-types#composite-type-fields
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m7:43PM[0m DBG ❗  Transaction Signature Error               [36mauthorizers=[0m[f8d6e0586b0a20c7] [36mgasLimit=[0m9999 [36mpayer=[0mf8d6e0586b0a20c7 [36mproposer=[0mf8d6e0586b0a20c7 [36mproposerKeyIndex=[0m0
+[90m7:43PM[0m DBG 📦 Block #8 committed                         [36mblockHeight=[0m8 [36mblockID=[0mdde4918a85b21933577196028021552d28f696f65f8d724b3c27fac7e7c2fe15
+[90m7:43PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0mf195d7ecbb31d17aca5334dbae6109e2a76e26a5680e3d263f6ba597ee6dd835
+[90m7:44PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:44PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:44PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m8 [36mblockID=[0mdde4918a85b21933577196028021552d28f696f65f8d724b3c27fac7e7c2fe15
+[90m7:44PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:44PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:44PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m25d163aebbb2b490aeefa566db78dd51c5e0812ee7e1dfd411d89c744a3ed66f
+[90m7:44PM[0m [33mWRN[0m ❗  Transaction reverted                      [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m11134470 [36mtxID=[0m25d163aebbb2b490aeefa566db78dd51c5e0812ee7e1dfd411d89c744a3ed66f
+[90m7:44PM[0m [33mWRN[0m [1;31mERR[0m [2m[25d163][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* transaction execute failed: [Error Code: 1101] cadence runtime error: Execution failed:
+error: cannot deploy invalid contract
+ --> 25d163aebbb2b490aeefa566db78dd51c5e0812ee7e1dfd411d89c744a3ed66f:3:2
+  |
+3 | 		signer.contracts.update(name: name, code: code.decodeHex())
+  | 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:159:31
+    |
+159 |                 history.append(round)
+    |                                ^^^^^ expected `MinorityRuleGame.RoundResult`, got `&MinorityRuleGame.RoundResult`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m7:44PM[0m DBG ❗  Transaction Signature Error               [36mauthorizers=[0m[f8d6e0586b0a20c7] [36mgasLimit=[0m9999 [36mpayer=[0mf8d6e0586b0a20c7 [36mproposer=[0mf8d6e0586b0a20c7 [36mproposerKeyIndex=[0m0
+[90m7:44PM[0m DBG 📦 Block #9 committed                         [36mblockHeight=[0m9 [36mblockID=[0m0f79dcd08b4b1f693878e0c04bd6b3a6e02484dadeb54a936b37e615a5bd4509
+[90m7:44PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m25d163aebbb2b490aeefa566db78dd51c5e0812ee7e1dfd411d89c744a3ed66f
+[90m7:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m9 [36mblockID=[0m0f79dcd08b4b1f693878e0c04bd6b3a6e02484dadeb54a936b37e615a5bd4509
+[90m7:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m2ea6a833e136967136b3a894230366ff5bae0d02c8480738d943cb27935eae8b
+[90m7:45PM[0m [33mWRN[0m ❗  Transaction reverted                      [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m11289392 [36mtxID=[0m2ea6a833e136967136b3a894230366ff5bae0d02c8480738d943cb27935eae8b
+[90m7:45PM[0m [33mWRN[0m [1;31mERR[0m [2m[2ea6a8][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* transaction execute failed: [Error Code: 1101] cadence runtime error: Execution failed:
+error: cannot deploy invalid contract
+ --> 2ea6a833e136967136b3a894230366ff5bae0d02c8480738d943cb27935eae8b:3:2
+  |
+3 | 		signer.contracts.update(name: name, code: code.decodeHex())
+  | 		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:162:27
+    |
+162 |                     votes: round.votes,
+    |                            ^^^^^^^^^^^ expected `{Address: Bool}`, got `&{Address: Bool}`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:164:32
+    |
+164 |                     eliminated: round.eliminatedPlayers,
+    |                                 ^^^^^^^^^^^^^^^^^^^^^^^ expected `[Address]`, got `&[Address]`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+error: mismatched types
+   --> f8d6e0586b0a20c7.MinorityRuleGame:165:31
+    |
+165 |                     surviving: round.survivingPlayers
+    |                                ^^^^^^^^^^^^^^^^^^^^^^ expected `[Address]`, got `&[Address]`; check the expression's type or convert it to the expected type
+
+  See documentation at: https://cadence-lang.org/docs/language/values-and-types
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m7:45PM[0m DBG ❗  Transaction Signature Error               [36mauthorizers=[0m[f8d6e0586b0a20c7] [36mgasLimit=[0m9999 [36mpayer=[0mf8d6e0586b0a20c7 [36mproposer=[0mf8d6e0586b0a20c7 [36mproposerKeyIndex=[0m0
+[90m7:45PM[0m DBG 📦 Block #10 committed                        [36mblockHeight=[0m10 [36mblockID=[0mba1a9462a5669431087036fa91bfb53051f0eb75def9430f4937f231d4c10d7e
+[90m7:45PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m2ea6a833e136967136b3a894230366ff5bae0d02c8480738d943cb27935eae8b
+[90m7:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m10 [36mblockID=[0mba1a9462a5669431087036fa91bfb53051f0eb75def9430f4937f231d4c10d7e
+[90m7:45PM[0m DBG 👤  GetAccount called                         [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG 👤  GetAccountAtLatestBlock called            [36maddress=[0mf8d6e0586b0a20c7
+[90m7:45PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0md4be054bbfa61540aa3da000e95020ae4e7d3a010284645dec5b734deefc5f69
+[90m7:45PM[0m DBG ⭐  Transaction executed                      [36mcomputationUsed=[0m12 [36mmemoryEstimate=[0m14622908 [36mtxID=[0md4be054bbfa61540aa3da000e95020ae4e7d3a010284645dec5b734deefc5f69
+[90m7:45PM[0m DBG [1;32mEVT[0m [2m[d4be05][0m flow.AccountContractUpdated: 0x59e55f2cac690288b0b578dd052281410f55f237e880a3b75176801481f1ef9f
+[90m7:45PM[0m DBG 📦 Block #11 committed                        [36mblockHeight=[0m11 [36mblockID=[0m81ad4653bc122872a16e1b86de265ca4f76cbf87af7addd3cab9756c18d0a8bd
+[90m7:45PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0md4be054bbfa61540aa3da000e95020ae4e7d3a010284645dec5b734deefc5f69
+[90m7:45PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m11
+[90m7:45PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508150 [36mscriptID=[0m211ed34a8340ab0fc393411213eb53f0280dd1f87b5f1bf91330d489ea069b01
+[90m7:46PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m11
+[90m7:46PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546156 [36mscriptID=[0m38cf4e81933b3b2915e310a332c599b2f94163d4920efd130bbb68a02f3c00c1

@@ -108,6 +108,96 @@ access(all) contract MinorityRuleGame {
         }
     }
 
+    access(all) struct GameInfo {
+        access(all) let gameId: UInt64
+        access(all) let creator: Address
+        access(all) let entryFee: UFix64
+        access(all) let questionText: String
+        access(all) let state: String
+        access(all) let currentRound: UInt32
+        access(all) let players: [Address]
+        access(all) let prizePool: UFix64
+        access(all) let roundHistory: [RoundResult]
+        access(all) let votingDeadline: UFix64?
+        access(all) let winner: Address?
+
+        init(game: &Game) {
+            self.gameId = game.gameId
+            self.creator = game.creator
+            self.entryFee = game.entryFee
+            self.questionText = game.questionText
+
+            // Convert GameState enum to String
+            if game.state == GameState.created {
+                self.state = "created"
+            } else if game.state == GameState.active {
+                self.state = "active"
+            } else if game.state == GameState.votingOpen {
+                self.state = "votingOpen"
+            } else if game.state == GameState.processingRound {
+                self.state = "processingRound"
+            } else if game.state == GameState.complete {
+                self.state = "complete"
+            } else {
+                self.state = "unknown"
+            }
+
+            self.currentRound = game.currentRound
+
+            // Copy players array
+            var playerKeys: [Address] = []
+            for key in game.players.keys {
+                playerKeys.append(key)
+            }
+            self.players = playerKeys
+
+            self.prizePool = game.prizePool.balance
+
+            // Copy roundHistory array
+            var history: [RoundResult] = []
+            for i, round in game.roundHistory {
+                // Copy votes dictionary
+                var copiedVotes: {Address: Bool} = {}
+                for address in round.votes.keys {
+                    copiedVotes[address] = round.votes[address]!
+                }
+
+                // Copy eliminated array
+                var copiedEliminated: [Address] = []
+                for addr in round.eliminatedPlayers {
+                    copiedEliminated.append(addr)
+                }
+
+                // Copy surviving array
+                var copiedSurviving: [Address] = []
+                for addr in round.survivingPlayers {
+                    copiedSurviving.append(addr)
+                }
+
+                // Create a new RoundResult struct with copied data
+                let copiedRound = RoundResult(
+                    round: round.round,
+                    votes: copiedVotes,
+                    minorityChoice: round.minorityChoice,
+                    eliminated: copiedEliminated,
+                    surviving: copiedSurviving
+                )
+                history.append(copiedRound)
+            }
+            self.roundHistory = history
+
+            self.votingDeadline = game.roundDeadline
+
+            // Check for winner if game is complete
+            if game.state == GameState.complete {
+                let activePlayers = game.getActivePlayers()
+                self.winner = activePlayers.length > 0 ? activePlayers[0] : nil
+            } else {
+                self.winner = nil
+            }
+        }
+    }
+
     // ========== Game Resource ==========
 
     access(all) resource Game {
@@ -115,8 +205,6 @@ access(all) contract MinorityRuleGame {
         access(all) let creator: Address
         access(all) let entryFee: UFix64
         access(all) let roundDuration: UFix64
-        access(all) let minPlayers: UInt32
-        access(all) let maxPlayers: UInt32
         access(all) let questionText: String
 
         access(all) var state: GameState
@@ -133,8 +221,6 @@ access(all) contract MinorityRuleGame {
             creator: Address,
             entryFee: UFix64,
             roundDuration: UFix64,
-            minPlayers: UInt32,
-            maxPlayers: UInt32,
             questionText: String
         ) {
             self.gameId = MinorityRuleGame.nextGameId
@@ -143,8 +229,6 @@ access(all) contract MinorityRuleGame {
             self.creator = creator
             self.entryFee = entryFee
             self.roundDuration = roundDuration
-            self.minPlayers = minPlayers
-            self.maxPlayers = maxPlayers
             self.questionText = questionText
 
             self.state = GameState.created
@@ -165,7 +249,6 @@ access(all) contract MinorityRuleGame {
                 self.state == GameState.created: "Game must be in created state to join"
                 payment.balance == self.entryFee: "Payment must equal entry fee"
                 self.players[player] == nil: "Player already in game"
-                UInt32(self.players.length) < self.maxPlayers: "Game is full"
             }
 
             self.players[player] = Player(address: player)
@@ -179,7 +262,6 @@ access(all) contract MinorityRuleGame {
             pre {
                 self.state == GameState.created: "Game must be in created state to join"
                 self.players[player] == nil: "Player already in game"
-                UInt32(self.players.length) < self.maxPlayers: "Game is full"
             }
 
             self.players[player] = Player(address: player)
@@ -192,7 +274,7 @@ access(all) contract MinorityRuleGame {
         access(all) fun startGame() {
             pre {
                 self.state == GameState.created: "Game must be in created state"
-                UInt32(self.players.length) >= self.minPlayers: "Not enough players"
+                UInt32(self.players.length) >= 2: "Need at least 2 players to start"
             }
 
             self.state = GameState.active
@@ -432,16 +514,12 @@ access(all) contract MinorityRuleGame {
         creator: Address,
         entryFee: UFix64,
         roundDuration: UFix64,
-        minPlayers: UInt32,
-        maxPlayers: UInt32,
         questionText: String
     ): UInt64 {
         let game <- create Game(
             creator: creator,
             entryFee: entryFee,
             roundDuration: roundDuration,
-            minPlayers: minPlayers,
-            maxPlayers: maxPlayers,
             questionText: questionText
         )
         let gameId = game.gameId
@@ -467,6 +545,13 @@ access(all) contract MinorityRuleGame {
 
     access(all) fun getAllGames(): [UInt64] {
         return self.games.keys
+    }
+
+    access(all) fun getGameInfo(gameId: UInt64): GameInfo? {
+        if let game = self.borrowGame(gameId) {
+            return GameInfo(game: game)
+        }
+        return nil
     }
 
     // ========== Constructor ==========

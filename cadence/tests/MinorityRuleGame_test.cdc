@@ -21,7 +21,7 @@ access(all) fun testContractDeployment() {
 }
 
 access(all) fun testCreateGame() {
-    let code = "import MinorityRuleGame from 0x0000000000000008\n\ntransaction { execute { let gameId = MinorityRuleGame.createGame(creator: 0x01, entryFee: 10.0, roundDuration: 60.0, minPlayers: 2, maxPlayers: 5, questionText: \"Test?\") } }"
+    let code = "import MinorityRuleGame from 0x0000000000000008\n\ntransaction { execute { let gameId = MinorityRuleGame.createGame(creator: 0x01, entryFee: 10.0, roundDuration: 60.0, questionText: \"Test?\") } }"
 
     let tx = Test.Transaction(
         code: code,

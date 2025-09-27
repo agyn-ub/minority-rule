@@ -1,0 +1,21 @@
+{
+	"name": "liar-games",
+	"version": "1.0.0",
+	"description": "Minority Rule Game on Flow Blockchain",
+	"main": "index.js",
+	"scripts": {
+		"test": "flow test cadence/tests/MinorityRuleGame_Simulation_test.cdc",
+		"emulator": "flow emulator start",
+		"dev-wallet": "flow dev-wallet",
+		"deploy:local": "flow project deploy --network emulator",
+		"deploy:testnet": "flow project deploy --network testnet",
+		"dev:setup": "./scripts/dev-setup.sh",
+		"dev:stop": "./scripts/stop-dev.sh",
+		"dev:frontend": "cd frontend/liar-games-web && npm run dev",
+		"install:frontend": "cd frontend/liar-games-web && npm install",
+		"dev:all": "npm run dev:setup && npm run dev:frontend"
+	},
+	"keywords": ["flow", "blockchain", "game", "cadence", "dapp"],
+	"author": "",
+	"license": "ISC"
+}

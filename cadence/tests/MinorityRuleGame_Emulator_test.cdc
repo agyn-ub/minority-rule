@@ -73,8 +73,6 @@ access(all) fun testSimple2PlayerGame() {
         creator: alice!.address,
         entryFee: 10.0,
         roundDuration: 60.0,
-        minPlayers: 2,
-        maxPlayers: 5,
         question: "Simple test game?"
     )
 
@@ -109,17 +107,15 @@ access(all) fun createGame(
     creator: Address,
     entryFee: UFix64,
     roundDuration: UFix64,
-    minPlayers: UInt32,
-    maxPlayers: UInt32,
     question: String
 ): UInt64 {
-    let code = "import MinorityRuleGame from 0x0000000000000008\n\ntransaction(creator: Address, entryFee: UFix64, roundDuration: UFix64, minPlayers: UInt32, maxPlayers: UInt32, questionText: String) {\n    execute {\n        let gameId = MinorityRuleGame.createGame(\n            creator: creator,\n            entryFee: entryFee,\n            roundDuration: roundDuration,\n            minPlayers: minPlayers,\n            maxPlayers: maxPlayers,\n            questionText: questionText\n        )\n        log(\"Created game with ID: \".concat(gameId.toString()))\n    }\n}"
+    let code = "import MinorityRuleGame from 0x0000000000000008\n\ntransaction(creator: Address, entryFee: UFix64, roundDuration: UFix64, questionText: String) {\n    execute {\n        let gameId = MinorityRuleGame.createGame(\n            creator: creator,\n            entryFee: entryFee,\n            roundDuration: roundDuration,\n            questionText: questionText\n        )\n        log(\"Created game with ID: \".concat(gameId.toString()))\n    }\n}"
 
     let tx = Test.Transaction(
         code: code,
         authorizers: [],
         signers: [],
-        arguments: [creator, entryFee, roundDuration, minPlayers, maxPlayers, question]
+        arguments: [creator, entryFee, roundDuration, question]
     )
 
     let result = Test.executeTransaction(tx)

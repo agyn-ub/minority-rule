@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Game, GameState } from '@/types/game';
-import fcl from '@/lib/flow/config';
+import fcl, { initializeFCL } from '@/lib/flow/config';
 
 interface GameContextType {
   games: Game[];
@@ -47,7 +47,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           import MinorityRuleGame from 0xMinorityRuleGame
 
           access(all) fun main(): [UInt64] {
-            return MinorityRuleGame.getAllGameIds()
+            return MinorityRuleGame.getAllGames()
           }
         `
       });
@@ -139,7 +139,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
           transaction(entryFee: UFix64, questionText: String) {
             prepare(signer: auth(BorrowValue) &Account) {
-              MinorityRuleGame.createGame(entryFee: entryFee, questionText: questionText, creator: signer.address)
+              let gameId = MinorityRuleGame.createGame(
+                creator: signer.address,
+                entryFee: entryFee,
+                roundDuration: 3600.0,  // 1 hour rounds
+                questionText: questionText
+              )
+              log("Created game with ID: ".concat(gameId.toString()))
             }
           }
         `,

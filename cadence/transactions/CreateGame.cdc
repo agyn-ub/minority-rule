@@ -3,8 +3,6 @@ import MinorityRuleGame from "../contracts/MinorityRuleGame.cdc"
 transaction(
     entryFee: UFix64,
     roundDuration: UFix64,
-    minPlayers: UInt32,
-    maxPlayers: UInt32,
     questionText: String
 ) {
     let creator: Address
@@ -18,8 +16,6 @@ transaction(
             creator: self.creator,
             entryFee: entryFee,
             roundDuration: roundDuration,
-            minPlayers: minPlayers,
-            maxPlayers: maxPlayers,
             questionText: questionText
         )
 

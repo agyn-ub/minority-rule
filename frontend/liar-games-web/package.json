@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "emulator": "flow emulator start",
+    "dev-wallet": "flow dev-wallet",
+    "deploy": "flow project deploy --network emulator"
   },
   "dependencies": {
     "@onflow/fcl": "^1.20.1",

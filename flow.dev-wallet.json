@@ -1,0 +1,42 @@
+{
+  "emulator": {
+    "serviceAccount": {
+      "address": "0xf8d6e0586b0a20c7",
+      "key": "680d014d72e5a7d990b1c0ad82bf3e6e8fb946b9f7cd68d699c8d3aa6f0a9c46"
+    },
+    "port": 8888,
+    "verbose": true
+  },
+  "devWallet": {
+    "port": 8701,
+    "accounts": 10,
+    "avatars": true,
+    "defaultBalance": 1000.0
+  },
+  "testAccounts": [
+    {
+      "name": "Alice (Game Creator)",
+      "initialBalance": 1000.0
+    },
+    {
+      "name": "Bob (Player 2)",
+      "initialBalance": 1000.0
+    },
+    {
+      "name": "Charlie (Player 3)",
+      "initialBalance": 1000.0
+    },
+    {
+      "name": "Dave (Player 4)",
+      "initialBalance": 1000.0
+    },
+    {
+      "name": "Eve (Player 5)",
+      "initialBalance": 1000.0
+    },
+    {
+      "name": "Frank (Player 6)",
+      "initialBalance": 1000.0
+    }
+  ]
+}
