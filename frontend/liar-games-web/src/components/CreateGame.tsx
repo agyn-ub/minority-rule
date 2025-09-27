@@ -28,6 +28,11 @@ export default function CreateGame() {
     }
   };
 
+  // Only render if user is authenticated
+  if (!user?.addr) {
+    return null;
+  }
+
   if (!showForm) {
     return (
       <button

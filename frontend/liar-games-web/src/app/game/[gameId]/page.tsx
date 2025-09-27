@@ -10,7 +10,7 @@ export default function GamePage() {
   const params = useParams();
   const router = useRouter();
   const { currentGame, fetchGameById, joinGame, submitVote, claimPrize, isLoading, error } = useGame();
-  const { user } = useAuth();
+  const { user, logIn } = useAuth();
   const [vote, setVote] = useState<boolean | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
 
@@ -24,7 +24,7 @@ export default function GamePage() {
 
   const handleJoinGame = async () => {
     if (!user?.addr) {
-      alert('Please connect your wallet first');
+      // Instead of alert, we'll handle this in the UI
       return;
     }
     await joinGame(gameId);
@@ -139,22 +139,99 @@ export default function GamePage() {
             )}
           </div>
 
-          {/* Action Buttons */}
-          {canJoin && (
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">Join Game</h3>
-              <p className="text-gray-400 mb-4">
-                Entry fee: {currentGame.entryFee} FLOW
-              </p>
-              <button
-                onClick={handleJoinGame}
-                disabled={isLoading}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 text-white font-medium py-3 rounded-lg transition-colors"
-              >
-                {isLoading ? 'Joining...' : 'Join Game'}
-              </button>
-            </div>
-          )}
+          {/* Action Section - Always visible with appropriate state */}
+          <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h3 className="text-lg font-semibold text-white mb-4">Game Actions</h3>
+
+            {/* Registration State */}
+            {currentGame.state === GameState.REGISTRATION && (
+              <>
+                {!user?.addr ? (
+                  <>
+                    <p className="text-gray-400 mb-4">
+                      Connect your wallet to join this game
+                    </p>
+                    <button
+                      onClick={logIn}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+                    >
+                      Connect Wallet to Join
+                    </button>
+                  </>
+                ) : isPlayer ? (
+                  <>
+                    <p className="text-gray-400 mb-4">
+                      You are registered for this game. Waiting for more players...
+                    </p>
+                    <button
+                      disabled
+                      className="w-full bg-gray-600 text-gray-300 font-medium py-3 rounded-lg cursor-not-allowed"
+                    >
+                      Already Joined ✓
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-gray-400 mb-4">
+                      Entry fee: {currentGame.entryFee} FLOW
+                    </p>
+                    <button
+                      onClick={handleJoinGame}
+                      disabled={isLoading}
+                      className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-900 text-white font-medium py-3 rounded-lg transition-colors"
+                    >
+                      {isLoading ? 'Joining...' : 'Join Game'}
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+
+            {/* Active State - Not a Player */}
+            {currentGame.state === GameState.ACTIVE && !isPlayer && (
+              <>
+                <p className="text-gray-400 mb-4">
+                  This game is currently in progress. You cannot join an active game.
+                </p>
+                <button
+                  disabled
+                  className="w-full bg-yellow-600/20 text-yellow-400 font-medium py-3 rounded-lg cursor-not-allowed border border-yellow-600/50"
+                >
+                  Game in Progress
+                </button>
+              </>
+            )}
+
+            {/* Active State - Eliminated Player */}
+            {currentGame.state === GameState.ACTIVE && isPlayer && !isActive && (
+              <>
+                <p className="text-gray-400 mb-4">
+                  You were eliminated in round {currentGame.players[user.addr].eliminatedRound}.
+                </p>
+                <button
+                  disabled
+                  className="w-full bg-red-600/20 text-red-400 font-medium py-3 rounded-lg cursor-not-allowed border border-red-600/50"
+                >
+                  Eliminated from Game
+                </button>
+              </>
+            )}
+
+            {/* Complete State - Not Winner */}
+            {currentGame.state === GameState.COMPLETE && !isWinner && (
+              <>
+                <p className="text-gray-400 mb-4">
+                  Game has ended. {currentGame.winner ? `Winner: ${currentGame.winner.slice(0, 6)}...${currentGame.winner.slice(-4)}` : 'No winner'}
+                </p>
+                <button
+                  disabled
+                  className="w-full bg-gray-600/20 text-gray-400 font-medium py-3 rounded-lg cursor-not-allowed border border-gray-600/50"
+                >
+                  Game Completed
+                </button>
+              </>
+            )}
+          </div>
 
           {canVote && (
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">

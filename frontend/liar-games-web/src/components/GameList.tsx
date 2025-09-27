@@ -1,13 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGame } from '@/contexts/GameContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { GameState } from '@/types/game';
 import { useRouter } from 'next/navigation';
 
 export default function GameList() {
-  const { games, fetchGames, isLoading } = useGame();
+  const { games, fetchGames, isLoading, joinGame } = useGame();
+  const { user, logIn } = useAuth();
   const router = useRouter();
+  const [joiningGameId, setJoiningGameId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchGames();
@@ -97,6 +100,74 @@ export default function GameList() {
                 <p className="text-yellow-400 text-sm">
                   Winner: {game.winner.slice(0, 6)}...{game.winner.slice(-4)}
                 </p>
+              </div>
+            )}
+
+            {/* Join Game Button */}
+            {game.state === GameState.REGISTRATION && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                {!user?.addr ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      logIn();
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Connect Wallet to Join
+                  </button>
+                ) : user?.addr && game.players[user.addr] ? (
+                  <button
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full px-4 py-2 bg-gray-600 text-gray-300 rounded-lg cursor-not-allowed"
+                    disabled
+                  >
+                    Already Joined
+                  </button>
+                ) : (
+                  <button
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      setJoiningGameId(game.gameId);
+                      try {
+                        await joinGame(game.gameId);
+                      } catch (error) {
+                        console.error('Failed to join game:', error);
+                      } finally {
+                        setJoiningGameId(null);
+                      }
+                    }}
+                    disabled={joiningGameId === game.gameId}
+                    className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {joiningGameId === game.gameId ? 'Joining...' : `Join Game (${game.entryFee} FLOW)`}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Game Status for Non-Registration States */}
+            {game.state === GameState.ACTIVE && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full px-4 py-2 bg-yellow-600/20 text-yellow-400 rounded-lg cursor-not-allowed border border-yellow-600/50"
+                  disabled
+                >
+                  Game in Progress
+                </button>
+              </div>
+            )}
+
+            {game.state === GameState.COMPLETE && !game.winner && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full px-4 py-2 bg-gray-600/20 text-gray-400 rounded-lg cursor-not-allowed border border-gray-600/50"
+                  disabled
+                >
+                  Game Completed
+                </button>
               </div>
             )}
           </div>
