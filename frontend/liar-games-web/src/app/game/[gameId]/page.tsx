@@ -27,18 +27,9 @@ export default function GamePage() {
       // Instead of alert, we'll handle this in the UI
       return;
     }
-    try {
-      await joinGame(gameId);
-      // Refresh the game data after joining
-      await fetchGameById(gameId);
-    } catch (error: any) {
-      // Check if it's an "already joined" error
-      if (error?.message?.includes('already joined') || error?.message?.includes('Player already in game')) {
-        // Refresh game data to update UI
-        await fetchGameById(gameId);
-      }
-      // Error is already handled in context
-    }
+    await joinGame(gameId);
+    // Refresh the game data after joining
+    await fetchGameById(gameId);
   };
 
   const handleSubmitVote = async () => {

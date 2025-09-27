@@ -144,20 +144,9 @@ export default function GameList() {
                     onClick={async (e) => {
                       e.stopPropagation();
                       setJoiningGameId(game.gameId);
-                      try {
-                        await joinGame(game.gameId, game.entryFee);
-                        await fetchGames(); // Refresh the games list after joining
-                      } catch (error: any) {
-                        // Check if it's an "already joined" error
-                        if (error?.message?.includes('Player already in game')) {
-                          // Refresh to update UI with current state
-                          await fetchGames();
-                        } else {
-                          console.error('Failed to join game:', error);
-                        }
-                      } finally {
-                        setJoiningGameId(null);
-                      }
+                      await joinGame(game.gameId, game.entryFee);
+                      await fetchGames(); // Refresh the games list after joining
+                      setJoiningGameId(null);
                     }}
                     disabled={joiningGameId === game.gameId || (user?.addr && game.players[user.addr])}
                     className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

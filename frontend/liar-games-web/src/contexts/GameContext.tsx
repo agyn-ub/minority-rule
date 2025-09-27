@@ -250,11 +250,32 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       console.log('FCL not yet initialized, skipping joinGame');
       return;
     }
+
+    // Get current user
+    const user = await fcl.currentUser.snapshot();
+    if (!user?.addr) {
+      setError('Please connect your wallet first');
+      return;
+    }
+
+    // Check if player has already joined this game
+    const game = games.find(g => g.gameId === gameId) || currentGame;
+    if (game?.players && game.players[user.addr]) {
+      console.log('Player has already joined this game');
+      setError('You have already joined this game');
+      // Refresh to ensure UI is in sync
+      await fetchGames();
+      if (currentGame?.gameId === gameId) {
+        await fetchGameById(gameId);
+      }
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     try {
       // Get the entry fee from the game if not provided
-      const gameEntryFee = entryFee || games.find(g => g.gameId === gameId)?.entryFee || currentGame?.entryFee || "0.0";
+      const gameEntryFee = entryFee || game?.entryFee || "0.0";
 
       const transactionId = await fcl.mutate({
         cadence: `
@@ -302,7 +323,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       await fetchGameById(gameId);
     } catch (err: any) {
       console.error('Error joining game:', err);
-      // Check if it's an "already joined" error
+      // Check if it's an "already joined" error (shouldn't happen with pre-check, but just in case)
       if (err?.message?.includes('Player already in game')) {
         setError('You have already joined this game');
         // Still refresh to ensure UI is in sync
@@ -311,7 +332,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       } else {
         setError('Failed to join game');
       }
-      throw err; // Re-throw to handle in the UI
+      // Don't throw - handle error gracefully in UI
     } finally {
       setIsLoading(false);
     }
