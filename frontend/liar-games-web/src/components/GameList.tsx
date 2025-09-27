@@ -19,8 +19,14 @@ export default function GameList() {
 
   const getStateColor = (state: GameState) => {
     switch (state) {
+      case GameState.CREATED:
+        return 'text-blue-400';
       case GameState.ACTIVE:
+        return 'text-yellow-400';
+      case GameState.VOTING_OPEN:
         return 'text-green-400';
+      case GameState.PROCESSING_ROUND:
+        return 'text-orange-400';
       case GameState.COMPLETE:
         return 'text-gray-400';
       default:
@@ -29,26 +35,43 @@ export default function GameList() {
   };
 
   const getStateBadge = (state: GameState, currentRound: number) => {
-    if (state === GameState.ACTIVE) {
-      if (currentRound === 1) {
+    switch (state) {
+      case GameState.CREATED:
+        return 'bg-blue-900/50 text-blue-400 border-blue-700';
+      case GameState.ACTIVE:
+        if (currentRound === 1) {
+          return 'bg-yellow-900/50 text-yellow-400 border-yellow-700';
+        }
         return 'bg-yellow-900/50 text-yellow-400 border-yellow-700';
-      }
-      return 'bg-green-900/50 text-green-400 border-green-700';
+      case GameState.VOTING_OPEN:
+        return 'bg-green-900/50 text-green-400 border-green-700';
+      case GameState.PROCESSING_ROUND:
+        return 'bg-orange-900/50 text-orange-400 border-orange-700';
+      case GameState.COMPLETE:
+        return 'bg-gray-900/50 text-gray-400 border-gray-700';
+      default:
+        return 'bg-gray-900/50 text-gray-400 border-gray-700';
     }
-    if (state === GameState.COMPLETE) {
-      return 'bg-gray-900/50 text-gray-400 border-gray-700';
-    }
-    return 'bg-gray-900/50 text-gray-400 border-gray-700';
   };
 
   const getStateText = (state: GameState, currentRound: number) => {
-    if (state === GameState.ACTIVE) {
-      if (currentRound === 1) {
-        return 'Round 1 - Open';
-      }
-      return `Round ${currentRound}`;
+    switch (state) {
+      case GameState.CREATED:
+        return 'Created';
+      case GameState.ACTIVE:
+        if (currentRound === 1) {
+          return 'Round 1 - Joining';
+        }
+        return `Active - Round ${currentRound}`;
+      case GameState.VOTING_OPEN:
+        return `Round ${currentRound} - Voting`;
+      case GameState.PROCESSING_ROUND:
+        return 'Processing Round';
+      case GameState.COMPLETE:
+        return 'Complete';
+      default:
+        return state;
     }
-    return state;
   };
 
   if (isLoading) {
@@ -90,13 +113,15 @@ export default function GameList() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">Players:</span>
-                <span className="text-white">{Object.keys(game.players).length}</span>
+                <span className="text-white">
+                  {Object.values(game.players).filter(p => p.isActive).length} / {Object.keys(game.players).length}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">Round:</span>
                 <span className="text-white">{game.currentRound}</span>
               </div>
-              {game.state === GameState.ACTIVE && game.votingDeadline && (
+              {game.state === GameState.VOTING_OPEN && game.votingDeadline && (
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400">Time left:</span>
                   <RoundTimer votingDeadline={game.votingDeadline} />
@@ -118,8 +143,8 @@ export default function GameList() {
               </div>
             )}
 
-            {/* Join Game Button - Only available in Round 1 */}
-            {game.state === GameState.ACTIVE && game.currentRound === 1 && (
+            {/* Join Game Button - Only available in Round 1 and voting state */}
+            {(game.state === GameState.VOTING_OPEN || game.state === GameState.ACTIVE) && game.currentRound === 1 && (
               <div className="mt-4 pt-4 border-t border-gray-700">
                 {!user?.addr ? (
                   <button
@@ -157,8 +182,8 @@ export default function GameList() {
               </div>
             )}
 
-            {/* Game Status for Round 2+ */}
-            {game.state === GameState.ACTIVE && game.currentRound > 1 && (
+            {/* Game Status for Round 2+ or processing */}
+            {((game.state === GameState.VOTING_OPEN || game.state === GameState.ACTIVE) && game.currentRound > 1) || game.state === GameState.PROCESSING_ROUND && (
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <button
                   onClick={(e) => e.stopPropagation()}

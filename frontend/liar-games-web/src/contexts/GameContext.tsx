@@ -15,6 +15,8 @@ interface GameContextType {
   joinGame: (gameId: string, entryFee?: string) => Promise<void>;
   submitVote: (gameId: string, vote: boolean) => Promise<void>;
   claimPrize: (gameId: string) => Promise<void>;
+  processRound: (gameId: string) => Promise<void>;
+  hasPlayerVoted: (gameId: string, playerAddress: string) => Promise<boolean>;
   setCurrentGame: (game: Game | null) => void;
 }
 
@@ -29,6 +31,8 @@ const GameContext = createContext<GameContextType>({
   joinGame: async () => {},
   submitVote: async () => {},
   claimPrize: async () => {},
+  processRound: async () => {},
+  hasPlayerVoted: async () => false,
   setCurrentGame: () => {},
 });
 
@@ -79,14 +83,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       const gameData = await Promise.all(gamePromises);
       const formattedGames = gameData.filter(Boolean).map((game: any) => {
-        // Map Cadence state strings to frontend enum
+        // Map Cadence state to frontend enum
         let mappedState: GameState;
         switch (game.state) {
-          case 'created': // Should not happen anymore, but handle legacy games
+          case 'created':
+            mappedState = GameState.CREATED;
+            break;
           case 'active':
-          case 'votingOpen':
-          case 'processingRound':
             mappedState = GameState.ACTIVE;
+            break;
+          case 'votingOpen':
+            mappedState = GameState.VOTING_OPEN;
+            break;
+          case 'processingRound':
+            mappedState = GameState.PROCESSING_ROUND;
             break;
           case 'complete':
             mappedState = GameState.COMPLETE;
@@ -95,17 +105,30 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.ACTIVE;
         }
 
-        // Convert players array to object for easy lookup
+        // Parse players - GameInfo returns an array of addresses
         const playersObj: any = {};
         if (game.players && Array.isArray(game.players)) {
+          // Fetch detailed player data if needed
           game.players.forEach((address: string) => {
             playersObj[address] = {
               address,
-              isActive: true, // We don't have this data from GameInfo, assume active
-              eliminatedRound: 0
+              isActive: true, // Will be updated with proper data later
+              eliminatedRound: undefined,
+              votingHistory: [],
+              joinedAt: 0
             };
           });
         }
+
+        // Parse round history properly
+        const roundHistory = game.roundHistory?.map((round: any) => ({
+          round: parseInt(round.round),
+          votes: round.votes || {},
+          minorityChoice: round.minorityChoice,
+          eliminatedPlayers: round.eliminatedPlayers || [],
+          survivingPlayers: round.survivingPlayers || [],
+          timestamp: parseFloat(round.timestamp)
+        })) || [];
 
         return {
           gameId: game.gameId,
@@ -114,11 +137,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           currentRound: parseInt(game.currentRound),
           players: playersObj,
           prizePool: game.prizePool,
-          roundHistory: game.roundHistory || [],
+          roundHistory,
           votingDeadline: game.votingDeadline,
           questionText: game.questionText,
           creator: game.creator,
           winner: game.winner,
+          roundDuration: game.roundDuration || '1800.0'
         };
       });
 
@@ -151,14 +175,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (response) {
-        // Map Cadence state strings to frontend enum
+        // Map Cadence state to frontend enum
         let mappedState: GameState;
         switch (response.state) {
-          case 'created': // Should not happen anymore, but handle legacy games
+          case 'created':
+            mappedState = GameState.CREATED;
+            break;
           case 'active':
-          case 'votingOpen':
-          case 'processingRound':
             mappedState = GameState.ACTIVE;
+            break;
+          case 'votingOpen':
+            mappedState = GameState.VOTING_OPEN;
+            break;
+          case 'processingRound':
+            mappedState = GameState.PROCESSING_ROUND;
             break;
           case 'complete':
             mappedState = GameState.COMPLETE;
@@ -167,17 +197,63 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.ACTIVE;
         }
 
-        // Convert players array to object for easy lookup
+        // Parse players - GameInfo returns an array of addresses
         const playersObj: any = {};
         if (response.players && Array.isArray(response.players)) {
           response.players.forEach((address: string) => {
             playersObj[address] = {
               address,
-              isActive: true, // We don't have this data from GameInfo, assume active
-              eliminatedRound: 0
+              isActive: true, // Will be updated with proper data later
+              eliminatedRound: undefined,
+              votingHistory: [],
+              joinedAt: 0
             };
           });
         }
+
+        // Parse round history properly
+        const roundHistory = response.roundHistory?.map((round: any) => ({
+          round: parseInt(round.round),
+          votes: round.votes || {},
+          minorityChoice: round.minorityChoice,
+          eliminatedPlayers: round.eliminatedPlayers || [],
+          survivingPlayers: round.survivingPlayers || [],
+          timestamp: parseFloat(round.timestamp)
+        })) || [];
+
+        // Get voting status if game is in voting state
+        let votingStatus = undefined;
+        if (mappedState === GameState.VOTING_OPEN) {
+          try {
+            const votingResponse = await fcl.query({
+              cadence: `
+                import MinorityRuleGame from 0xMinorityRuleGame
+
+                access(all) fun main(gameId: UInt64): {Address: Bool}? {
+                  let game = MinorityRuleGame.borrowGame(gameId)
+                  if game == nil {
+                    return nil
+                  }
+                  return game!.getVotingStatus()
+                }
+              `,
+              args: (arg: any, t: any) => [arg(response.gameId, t.UInt64)]
+            });
+            votingStatus = votingResponse;
+          } catch (err) {
+            console.error('Error fetching voting status:', err);
+          }
+        }
+
+        // Update player active status based on round history
+        roundHistory.forEach((round: any) => {
+          round.eliminatedPlayers?.forEach((address: string) => {
+            if (playersObj[address]) {
+              playersObj[address].isActive = false;
+              playersObj[address].eliminatedRound = round.round;
+            }
+          });
+        });
 
         const formattedGame: Game = {
           gameId: response.gameId,
@@ -186,11 +262,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           currentRound: parseInt(response.currentRound),
           players: playersObj,
           prizePool: response.prizePool,
-          roundHistory: response.roundHistory || [],
+          roundHistory,
           votingDeadline: response.votingDeadline,
           questionText: response.questionText,
           creator: response.creator,
           winner: response.winner,
+          roundDuration: response.roundDuration || '1800.0',
+          votingStatus
         };
         setCurrentGame(formattedGame);
       }
@@ -449,6 +527,81 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [fetchGameById, isInitialized]);
 
+  const processRound = useCallback(async (gameId: string) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping processRound');
+      return;
+    }
+    setIsLoading(true);
+    setError(null);
+    try {
+      const transactionId = await fcl.mutate({
+        cadence: `
+          import MinorityRuleGame from 0xMinorityRuleGame
+
+          transaction(gameId: UInt64) {
+            prepare(signer: auth(Storage) &Account) {
+              // Can be called by anyone after deadline
+            }
+
+            execute {
+              // Get reference to the game
+              let game = MinorityRuleGame.borrowGame(gameId)
+                  ?? panic("Game does not exist")
+
+              // Process the round (will fail if deadline not reached)
+              game.processRound()
+
+              log("Processed round ".concat(game.currentRound.toString())
+                  .concat(" for game ")
+                  .concat(gameId.toString()))
+            }
+          }
+        `,
+        args: (arg: any, t: any) => [arg(gameId, t.UInt64)],
+        limit: 1000 // Higher limit for processing
+      });
+
+      await fcl.tx(transactionId).onceSealed();
+      await fetchGameById(gameId);
+      await fetchGames(); // Refresh all games as well
+    } catch (err) {
+      console.error('Error processing round:', err);
+      setError('Failed to process round');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [fetchGameById, fetchGames, isInitialized]);
+
+  const hasPlayerVoted = useCallback(async (gameId: string, playerAddress: string): Promise<boolean> => {
+    if (!isInitialized) {
+      return false;
+    }
+    try {
+      const response = await fcl.query({
+        cadence: `
+          import MinorityRuleGame from 0xMinorityRuleGame
+
+          access(all) fun main(gameId: UInt64, player: Address): Bool {
+            let game = MinorityRuleGame.borrowGame(gameId)
+            if game == nil {
+              return false
+            }
+            return game!.hasPlayerVoted(player: player)
+          }
+        `,
+        args: (arg: any, t: any) => [
+          arg(gameId, t.UInt64),
+          arg(playerAddress, t.Address)
+        ]
+      });
+      return response || false;
+    } catch (err) {
+      console.error('Error checking vote status:', err);
+      return false;
+    }
+  }, [isInitialized]);
+
   return (
     <GameContext.Provider
       value={{
@@ -462,6 +615,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         joinGame,
         submitVote,
         claimPrize,
+        processRound,
+        hasPlayerVoted,
         setCurrentGame,
       }}
     >

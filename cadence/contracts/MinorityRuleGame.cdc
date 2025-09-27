@@ -331,12 +331,29 @@ access(all) contract MinorityRuleGame {
 
         // ========== Round Processing ==========
 
+        // Creator can process rounds without waiting for deadline
+        access(all) fun processRoundAsCreator(creator: Address) {
+            pre {
+                self.state == GameState.votingOpen: "Round not ready to process"
+                self.creator == creator: "Only game creator can force process"
+            }
+
+            // Call the internal processing logic
+            self._processRoundLogic()
+        }
+
         access(all) fun processRound() {
             pre {
                 self.state == GameState.votingOpen: "Round not ready to process"
                 getCurrentBlock().timestamp >= self.roundDeadline!: "Round deadline not reached"
             }
 
+            // Call the internal processing logic
+            self._processRoundLogic()
+        }
+
+        // Internal function with the actual round processing logic
+        access(self) fun _processRoundLogic() {
             self.state = GameState.processingRound
 
             // Count votes

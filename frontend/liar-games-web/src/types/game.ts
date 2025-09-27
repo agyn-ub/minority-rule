@@ -1,6 +1,9 @@
 export enum GameState {
-  ACTIVE = 'ACTIVE',
-  COMPLETE = 'COMPLETE'
+  CREATED = 'created',
+  ACTIVE = 'active',
+  VOTING_OPEN = 'votingOpen',
+  PROCESSING_ROUND = 'processingRound',
+  COMPLETE = 'complete'
 }
 
 export enum RoundPhase {
@@ -22,6 +25,7 @@ export interface RoundResult {
   votes: { [address: string]: boolean };
   minorityChoice: boolean;
   eliminatedPlayers: string[];
+  survivingPlayers: string[];
   timestamp: number;
 }
 
@@ -33,10 +37,12 @@ export interface Game {
   players: { [address: string]: Player };
   prizePool: string;
   roundHistory: RoundResult[];
-  votingDeadline?: number;
+  votingDeadline?: string;
   questionText: string;
   creator: string;
   winner?: string;
+  roundDuration: string;
+  votingStatus?: { [address: string]: boolean }; // Who has voted (not the actual votes)
 }
 
 export interface PlayerStats {
