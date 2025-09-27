@@ -130,7 +130,8 @@ export default function GameList() {
                       e.stopPropagation();
                       setJoiningGameId(game.gameId);
                       try {
-                        await joinGame(game.gameId);
+                        await joinGame(game.gameId, game.entryFee);
+                        await fetchGames(); // Refresh the games list after joining
                       } catch (error) {
                         console.error('Failed to join game:', error);
                       } finally {

@@ -12,7 +12,7 @@ interface GameContextType {
   fetchGames: () => Promise<void>;
   fetchGameById: (gameId: string) => Promise<void>;
   createGame: (entryFee: string, questionText: string) => Promise<void>;
-  joinGame: (gameId: string) => Promise<void>;
+  joinGame: (gameId: string, entryFee?: string) => Promise<void>;
   submitVote: (gameId: string, vote: boolean) => Promise<void>;
   claimPrize: (gameId: string) => Promise<void>;
   setCurrentGame: (game: Game | null) => void;
@@ -78,19 +78,39 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       );
 
       const gameData = await Promise.all(gamePromises);
-      const formattedGames = gameData.filter(Boolean).map((game: any) => ({
-        gameId: game.gameId,
-        entryFee: game.entryFee,
-        state: game.state as GameState,
-        currentRound: parseInt(game.currentRound),
-        players: game.players,
-        prizePool: game.prizePool,
-        roundHistory: game.roundHistory || [],
-        votingDeadline: game.votingDeadline,
-        questionText: game.questionText,
-        creator: game.creator,
-        winner: game.winner,
-      }));
+      const formattedGames = gameData.filter(Boolean).map((game: any) => {
+        // Map Cadence state strings to frontend enum
+        let mappedState: GameState;
+        switch (game.state) {
+          case 'created':
+            mappedState = GameState.REGISTRATION;
+            break;
+          case 'active':
+          case 'votingOpen':
+          case 'processingRound':
+            mappedState = GameState.ACTIVE;
+            break;
+          case 'complete':
+            mappedState = GameState.COMPLETE;
+            break;
+          default:
+            mappedState = GameState.REGISTRATION;
+        }
+
+        return {
+          gameId: game.gameId,
+          entryFee: game.entryFee,
+          state: mappedState,
+          currentRound: parseInt(game.currentRound),
+          players: game.players || {},
+          prizePool: game.prizePool,
+          roundHistory: game.roundHistory || [],
+          votingDeadline: game.votingDeadline,
+          questionText: game.questionText,
+          creator: game.creator,
+          winner: game.winner,
+        };
+      });
 
       setGames(formattedGames);
     } catch (err) {
@@ -121,12 +141,30 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (response) {
+        // Map Cadence state strings to frontend enum
+        let mappedState: GameState;
+        switch (response.state) {
+          case 'created':
+            mappedState = GameState.REGISTRATION;
+            break;
+          case 'active':
+          case 'votingOpen':
+          case 'processingRound':
+            mappedState = GameState.ACTIVE;
+            break;
+          case 'complete':
+            mappedState = GameState.COMPLETE;
+            break;
+          default:
+            mappedState = GameState.REGISTRATION;
+        }
+
         const formattedGame: Game = {
           gameId: response.gameId,
           entryFee: response.entryFee,
-          state: response.state as GameState,
+          state: mappedState,
           currentRound: parseInt(response.currentRound),
-          players: response.players,
+          players: response.players || {},
           prizePool: response.prizePool,
           roundHistory: response.roundHistory || [],
           votingDeadline: response.votingDeadline,
@@ -186,7 +224,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [fetchGames, isInitialized]);
 
-  const joinGame = useCallback(async (gameId: string) => {
+  const joinGame = useCallback(async (gameId: string, entryFee?: string) => {
     if (!isInitialized) {
       console.log('FCL not yet initialized, skipping joinGame');
       return;
@@ -194,39 +232,60 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
+      // Get the entry fee from the game if not provided
+      const gameEntryFee = entryFee || games.find(g => g.gameId === gameId)?.entryFee || currentGame?.entryFee || "0.0";
+
       const transactionId = await fcl.mutate({
         cadence: `
-          import MinorityRuleGame from 0xMinorityRuleGame
-          import FlowToken from 0xFlowToken
           import FungibleToken from 0xFungibleToken
+          import FlowToken from 0xFlowToken
+          import MinorityRuleGame from 0xMinorityRuleGame
 
           transaction(gameId: UInt64, amount: UFix64) {
-            prepare(signer: auth(BorrowValue) &Account) {
-              let vault = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(
-                from: /storage/flowTokenVault
-              ) ?? panic("Could not borrow FlowToken vault")
 
-              let payment <- vault.withdraw(amount: amount)
-              MinorityRuleGame.joinGame(gameId: gameId, player: signer.address, payment: <-payment)
+            let paymentVault: @{FungibleToken.Vault}
+            let playerAddress: Address
+
+            prepare(signer: auth(BorrowValue, SaveValue) &Account) {
+              // Get the player's FlowToken vault
+              let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
+                  ?? panic("Could not borrow reference to owner's vault")
+
+              // Withdraw the entry fee
+              self.paymentVault <- vaultRef.withdraw(amount: amount)
+              self.playerAddress = signer.address
+            }
+
+            execute {
+              // Get reference to the game
+              let game = MinorityRuleGame.borrowGame(gameId)
+                  ?? panic("Game does not exist")
+
+              // Join the game with payment
+              game.joinGame(player: self.playerAddress, payment: <- self.paymentVault)
+
+              log("Player ".concat(self.playerAddress.toString()).concat(" joined game ").concat(gameId.toString()))
             }
           }
         `,
         args: (arg: any, t: any) => [
           arg(gameId, t.UInt64),
-          arg(currentGame?.entryFee || "0.0", t.UFix64)
+          arg(gameEntryFee, t.UFix64)
         ],
         limit: 100
       });
 
       await fcl.tx(transactionId).onceSealed();
+      await fetchGames(); // Refresh all games
       await fetchGameById(gameId);
     } catch (err) {
       console.error('Error joining game:', err);
       setError('Failed to join game');
+      throw err; // Re-throw to handle in the UI
     } finally {
       setIsLoading(false);
     }
-  }, [currentGame, fetchGameById, isInitialized]);
+  }, [games, currentGame, fetchGames, fetchGameById, isInitialized]);
 
   const submitVote = useCallback(async (gameId: string, vote: boolean) => {
     if (!isInitialized) {
