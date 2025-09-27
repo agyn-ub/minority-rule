@@ -949,3 +949,53 @@ Consider suggesting an improvement here: https://github.com/onflow/cadence/issue
 [90m10:48PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m17 [36mblockID=[0md836b7c8c8144928f9b99432ab49ab2bf889e04eb9dcf88f15c4620769ac8312
 [90m10:48PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m17
 [90m10:48PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m10:49PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m17 [36mblockID=[0md836b7c8c8144928f9b99432ab49ab2bf889e04eb9dcf88f15c4620769ac8312
+[90m10:49PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m17
+[90m10:49PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m10:49PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m17 [36mblockID=[0md836b7c8c8144928f9b99432ab49ab2bf889e04eb9dcf88f15c4620769ac8312
+[90m10:49PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m17
+[90m10:49PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m10:49PM[0m DBG 🎁  GetLatestBlock called                     [36mblockHeight=[0m17 [36mblockID=[0md836b7c8c8144928f9b99432ab49ab2bf889e04eb9dcf88f15c4620769ac8312
+[90m10:49PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m17 [36mblockID=[0md836b7c8c8144928f9b99432ab49ab2bf889e04eb9dcf88f15c4620769ac8312
+[90m10:49PM[0m DBG 👤  GetAccountAtBlockHeight called            [36maddress=[0me03daebed8ca0615 [36mheight=[0m17
+[90m10:49PM[0m DBG 👤  ExecuteScriptAtLatestBlock called         [36mblockHeight=[0m17
+[90m10:49PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m197922 [36mscriptID=[0md8ee5f94dd505cf12240473cf48942a2c0ec8f226a9176e55859db79d084113a
+[90m10:49PM[0m DBG ✉️   Transaction submitted                   [36mtxID=[0m7735a3d2a29af94f0ba34f1d883299fb30fbf8ffec4d72fd29d627867f8cb513
+[90m10:49PM[0m [33mWRN[0m ❗  Transaction reverted                      [36mcomputationUsed=[0m0 [36mmemoryEstimate=[0m3475697 [36mtxID=[0m7735a3d2a29af94f0ba34f1d883299fb30fbf8ffec4d72fd29d627867f8cb513
+[90m10:49PM[0m [33mWRN[0m [1;31mERR[0m [2m[7735a3][0m [Error Code: 1101] error caused by: 1 error occurred:
+	* transaction preprocess failed: [Error Code: 1101] cadence runtime error: Execution failed:
+error: value of type `&MinorityRuleGame` has no member `submitVote`
+ --> 7735a3d2a29af94f0ba34f1d883299fb30fbf8ffec4d72fd29d627867f8cb513:6:31
+  |
+6 |               MinorityRuleGame.submitVote(gameId: gameId, player: signer.address, vote: vote)
+  |                                ^^^^^^^^^^ the member is not defined on the type; check for typos or if the member exists on the type
+
+Was this error unhelpful?
+Consider suggesting an improvement here: https://github.com/onflow/cadence/issues.
+
+
+
+[90m10:49PM[0m DBG ❗  Transaction Signature Error               [36mauthorizers=[0m[e03daebed8ca0615] [36mgasLimit=[0m100 [36mpayer=[0me03daebed8ca0615 [36mproposer=[0me03daebed8ca0615 [36mproposerKeyIndex=[0m0
+[90m10:49PM[0m DBG 📦 Block #18 committed                        [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:49PM[0m DBG 📝  GetTransactionResult called               [36mtxID=[0m7735a3d2a29af94f0ba34f1d883299fb30fbf8ffec4d72fd29d627867f8cb513
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m7 [36mmemoryEstimate=[0m3526724 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m7 [36mmemoryEstimate=[0m3526724 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3570515 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3568070 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m10:50PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m18 [36mblockID=[0m3474e26c65edcc09630d59c31b27056581265d74cfbad3c081e2eacbf88757f7
+[90m10:50PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m18
+[90m10:50PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m10 [36mmemoryEstimate=[0m3570515 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
