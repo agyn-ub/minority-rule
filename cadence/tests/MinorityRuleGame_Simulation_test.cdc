@@ -298,6 +298,124 @@ access(all) fun testScenarioE_TieScenarios() {
     Test.assertEqual(dave!.address, winner[0])
 }
 
+// ========== Scenario F: Single Survivor Victory Path ==========
+access(all) fun testScenarioF_SingleSurvivorPath() {
+    let gameId = createGame(
+        creator: alice!.address,
+        entryFee: 10.0,
+        roundDuration: 60.0,
+        minPlayers: 3,
+        maxPlayers: 10,
+        question: "Progressive elimination?"
+    )
+
+    // 6 players join
+    joinGame(alice!, gameId, 10.0)
+    joinGame(bob!, gameId, 10.0)
+    joinGame(charlie!, gameId, 10.0)
+    joinGame(dave!, gameId, 10.0)
+    joinGame(eve!, gameId, 10.0)
+    joinGame(frank!, gameId, 10.0)
+
+    startGame(gameId)
+
+    // Round 1: 4 YES (eliminated), 2 NO (survive)
+    submitVote(alice!, gameId, true)
+    submitVote(bob!, gameId, true)
+    submitVote(charlie!, gameId, true)
+    submitVote(dave!, gameId, true)
+    submitVote(eve!, gameId, false)
+    submitVote(frank!, gameId, false)
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // Game should end with 2 winners (Eve and Frank)
+    let gameState = getGameState(gameId)
+    Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
+
+    let winners = getActivePlayers(gameId)
+    Test.assertEqual(2, winners.length)
+    Test.assert(winners.contains(eve!.address))
+    Test.assert(winners.contains(frank!.address))
+}
+
+// ========== Scenario H: Early Game End ==========
+access(all) fun testScenarioH_EarlyGameEnd() {
+    let gameId = createGame(
+        creator: alice!.address,
+        entryFee: 10.0,
+        roundDuration: 60.0,
+        minPlayers: 3,
+        maxPlayers: 10,
+        question: "Quick resolution?"
+    )
+
+    // 5 players join
+    joinGame(alice!, gameId, 10.0)
+    joinGame(bob!, gameId, 10.0)
+    joinGame(charlie!, gameId, 10.0)
+    joinGame(dave!, gameId, 10.0)
+    joinGame(eve!, gameId, 10.0)
+
+    startGame(gameId)
+
+    // Round 1: 1 YES (minority), 4 NO (eliminated)
+    submitVote(alice!, gameId, true)
+    submitVote(bob!, gameId, false)
+    submitVote(charlie!, gameId, false)
+    submitVote(dave!, gameId, false)
+    submitVote(eve!, gameId, false)
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // Game should end with 1 winner (Alice)
+    let gameState = getGameState(gameId)
+    Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
+
+    let winners = getActivePlayers(gameId)
+    Test.assertEqual(1, winners.length)
+    Test.assertEqual(alice!.address, winners[0])
+}
+
+// ========== Scenario G: No Winners (Nobody Votes) ==========
+access(all) fun testScenarioG_NoWinners() {
+    // Create test accounts for this scenario
+    let player1 = Test.createAccount()
+    let player2 = Test.createAccount()
+    let player3 = Test.createAccount()
+
+    let gameId = createGame(
+        creator: player1!.address,
+        entryFee: 10.0,
+        roundDuration: 60.0,
+        minPlayers: 3,
+        maxPlayers: 10,
+        question: "Will anyone vote?"
+    )
+
+    // 3 players join
+    joinGame(player1!, gameId, 10.0)
+    joinGame(player2!, gameId, 10.0)
+    joinGame(player3!, gameId, 10.0)
+
+    startGame(gameId)
+
+    // Round 1: Nobody votes - all are eliminated
+    // Don't submit any votes
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // Game should end with 0 winners
+    let gameState = getGameState(gameId)
+    Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
+
+    let winners = getActivePlayers(gameId)
+    Test.assertEqual(0, winners.length) // No winners!
+}
+
 // ========== Helper Functions ==========
 
 access(all) fun createGame(
@@ -388,7 +506,10 @@ access(all) fun getGameState(_ gameId: UInt64): {String: AnyStruct} {
     let result = Test.executeScript(code, [gameId])
     Test.expect(result, Test.beSucceeded())
 
-    return result.returnValue! as! {String: AnyStruct}
+    let returnValue = result.returnValue as! {String: AnyStruct}?
+    Test.assert(returnValue != nil, message: "Game state should not be nil")
+
+    return returnValue!
 }
 
 access(all) fun getActivePlayers(_ gameId: UInt64): [Address] {

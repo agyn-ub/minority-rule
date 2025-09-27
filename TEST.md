@@ -56,7 +56,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Game completion event with 2 winners
 - Player profiles updated correctly
 
-### Scenario B: Minimum Player Game (2 Players)
+### Scenario B: Minimum Player Game (2 Players) ✅ IMPLEMENTED
 **Setup:**
 - 2 players (Alice, Bob)
 - Entry fee: 20 FLOW each
@@ -65,15 +65,20 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 **Round 1:**
 - Alice votes YES
 - Bob votes NO
-- Result: One player eliminated, immediate winner
+- Result: It's a tie (1 YES, 1 NO), both survive
+- **Game ends**: Only 2 players remain, both are winners
+
+**Actual Result:**
+- Alice and Bob both win (split 40 FLOW)
+- Game completes after 1 round due to tie
 
 **Validations:**
 - Quick game resolution
 - Single round completion
-- Winner gets full prize pool
-- Stats show 1 round survived for winner
+- Both winners split prize pool
+- Stats show both players survived
 
-### Scenario C: Maximum Capacity Game (10 Players)
+### Scenario C: Maximum Capacity Game (10 Players) ✅ IMPLEMENTED
 **Setup:**
 - 10 players
 - Entry fee: 5 FLOW each
@@ -86,6 +91,11 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 **Round 2:**
 - 2 players vote YES (eliminated)
 - 1 player votes NO (winner)
+- **Game ends**: Only 1 player remains
+
+**Actual Result:**
+- Single winner claims full 50 FLOW prize
+- Game completes after 2 rounds
 
 **Validations:**
 - System handles max players correctly
@@ -93,7 +103,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Event emissions scale properly
 - Gas usage remains reasonable
 
-### Scenario D: Non-Voter Elimination
+### Scenario D: Non-Voter Elimination ✅ IMPLEMENTED
 **Setup:**
 - 4 players (Alice, Bob, Charlie, Dave)
 - Entry fee: 10 FLOW each
@@ -104,19 +114,20 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Charlie doesn't vote (eliminated)
 - Dave doesn't vote (eliminated)
 - Result: Alice and Bob survive (tie)
+- **Game ends**: Only 2 players remain, both are winners
 
-**Round 2:**
-- Alice votes YES
-- Bob times out (doesn't vote, eliminated)
-- Result: Alice wins
+**Actual Result:**
+- Alice and Bob both win (split 40 FLOW)
+- Non-voters eliminated, game ends with 2 winners
 
 **Validations:**
 - Non-voters properly eliminated
 - Timeout enforcement works
 - Partial participation handled
 - Events show non-voting eliminations
+- Game correctly ends with < 3 players
 
-### Scenario E: Tie Scenarios
+### Scenario E: Tie Scenarios ✅ IMPLEMENTED
 **Setup:**
 - 4 players
 - Entry fee: 10 FLOW each
@@ -134,6 +145,11 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 **Round 3:**
 - 3 vote YES (eliminated)
 - 1 votes NO (winner)
+- **Game ends**: Only 1 player remains
+
+**Actual Result:**
+- Single winner after breaking tie in Round 3
+- Shows ties can persist across multiple rounds
 
 **Validations:**
 - Ties don't eliminate anyone
@@ -141,16 +157,17 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Multiple consecutive ties handled
 - Eventually resolves to winner
 
-### Scenario F: Single Survivor Victory Path
+### Scenario F: Single Survivor Victory Path ✅ IMPLEMENTED
 **Setup:**
 - 6 players
 - Entry fee: 10 FLOW each
 - Prize pool: 60 FLOW
 
-**Progressive Elimination:**
+**Expected Flow:**
 - Round 1: 6 → 2 survivors (4 eliminated)
-- Round 2: 2 → 1 survivor (1 eliminated)
-- Result: Single winner claims 60 FLOW
+- **Game would end**: Only 2 players remain
+
+**Note:** With new rules, game would end after Round 1 with 2 winners
 
 **Validations:**
 - Progressive elimination tracking
@@ -158,28 +175,30 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Each player's elimination round recorded
 - Winner's complete voting history preserved
 
-### Scenario G: No Survivors (All Eliminated)
+### Scenario G: No Winners (Nobody Votes) ✅ IMPLEMENTED
 **Setup:**
 - 3 players
 - Entry fee: 10 FLOW each
+- Prize pool: 30 FLOW
 
 **Round 1:**
-- All 3 players vote YES
-- No minority exists
-- Result: In a 3-way tie, all survive
+- No players vote (all miss deadline)
+- Result: All eliminated for non-voting
+- **Game ends**: 0 players remain, no winners
 
-**Special Case:**
-- If modified rules: all vote same = all eliminated
+**Actual Result:**
+- All players eliminated for not voting
+- Game completes with 0 winners
 - Prize pool remains unclaimed
-- Game marked complete with no winner
 
 **Validations:**
-- Edge case handling
-- Prize pool locked (no claims possible)
+- Edge case handling for no votes
+- All players properly eliminated
 - Game state properly finalized
-- Stats show no winner
+- Active players list is empty
+- Prize pool cannot be claimed
 
-### Scenario H: Early Game End
+### Scenario H: Early Game End ✅ IMPLEMENTED
 **Setup:**
 - 5 players
 - Entry fee: 10 FLOW each
@@ -188,6 +207,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - 1 player votes YES (minority)
 - 4 players vote NO (eliminated)
 - Result: Immediate winner in round 1
+- **Game ends**: Only 1 player remains
 
 **Validations:**
 - Quick game resolution
@@ -310,6 +330,22 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Handle 20+ players per game
 - Process rounds in < 2 seconds
 - Events emission < 1000 per round
+
+## Test Implementation Status
+
+### Implemented Tests (8/8) ✅ ALL SCENARIOS IMPLEMENTED
+- ✅ Scenario A: Classic 5-Player Game
+- ✅ Scenario B: Minimum Player Game (2 Players)
+- ✅ Scenario C: Maximum Capacity Game (10 Players)
+- ✅ Scenario D: Non-Voter Elimination
+- ✅ Scenario E: Tie Scenarios
+- ✅ Scenario F: Single Survivor Victory Path
+- ✅ Scenario G: No Winners (Nobody Votes)
+- ✅ Scenario H: Early Game End
+
+### Test Files
+- **Basic Tests**: `cadence/tests/MinorityRuleGame_test.cdc`
+- **Simulation Tests**: `cadence/tests/MinorityRuleGame_Simulation_test.cdc`
 
 ## Test Execution Commands
 
