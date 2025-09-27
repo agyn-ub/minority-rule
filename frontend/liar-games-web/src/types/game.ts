@@ -1,5 +1,4 @@
 export enum GameState {
-  REGISTRATION = 'REGISTRATION',
   ACTIVE = 'ACTIVE',
   COMPLETE = 'COMPLETE'
 }

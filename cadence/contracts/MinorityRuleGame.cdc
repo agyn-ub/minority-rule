@@ -231,14 +231,20 @@ access(all) contract MinorityRuleGame {
             self.roundDuration = roundDuration
             self.questionText = questionText
 
-            self.state = GameState.created
-            self.currentRound = 0
-            self.roundDeadline = nil
+            // Start game immediately in voting state
+            self.state = GameState.votingOpen
+            self.currentRound = 1
+            self.roundDeadline = getCurrentBlock().timestamp + roundDuration
             self.players = {}
             self.prizePool <- FlowToken.createEmptyVault(vaultType: Type<@FlowToken.Vault>())
             self.roundHistory = []
             self.currentVotes = {}
             self.hasVoted = {}
+
+            // Add creator as first player
+            self.players[creator] = Player(address: creator)
+
+            emit RoundStarted(gameId: self.gameId, round: 1, deadline: self.roundDeadline!)
         }
 
 
@@ -246,13 +252,16 @@ access(all) contract MinorityRuleGame {
 
         access(all) fun joinGame(player: Address, payment: @{FungibleToken.Vault}) {
             pre {
-                self.state == GameState.created: "Game must be in created state to join"
+                self.currentRound == 1: "New players can only join during Round 1"
+                self.state == GameState.votingOpen: "Game must be in voting state to join"
                 payment.balance == self.entryFee: "Payment must equal entry fee"
                 self.players[player] == nil: "Player already in game"
             }
 
             self.players[player] = Player(address: player)
             self.prizePool.deposit(from: <- payment)
+            // New players joining mid-round don't vote this round
+            self.hasVoted[player] = false
 
             emit PlayerJoined(gameId: self.gameId, player: player, stake: self.entryFee)
         }
@@ -260,11 +269,13 @@ access(all) contract MinorityRuleGame {
         // Test-only function to join without payment
         access(all) fun joinGameTest(player: Address) {
             pre {
-                self.state == GameState.created: "Game must be in created state to join"
+                self.currentRound == 1: "New players can only join during Round 1"
+                self.state == GameState.votingOpen: "Game must be in voting state to join"
                 self.players[player] == nil: "Player already in game"
             }
 
             self.players[player] = Player(address: player)
+            self.hasVoted[player] = false
             // No actual payment, just emit the event for tracking
             emit PlayerJoined(gameId: self.gameId, player: player, stake: self.entryFee)
         }
@@ -514,8 +525,13 @@ access(all) contract MinorityRuleGame {
         creator: Address,
         entryFee: UFix64,
         roundDuration: UFix64,
-        questionText: String
+        questionText: String,
+        payment: @{FungibleToken.Vault}
     ): UInt64 {
+        pre {
+            payment.balance == entryFee: "Payment must equal entry fee"
+        }
+
         let game <- create Game(
             creator: creator,
             entryFee: entryFee,
@@ -523,6 +539,10 @@ access(all) contract MinorityRuleGame {
             questionText: questionText
         )
         let gameId = game.gameId
+
+        // Deposit creator's payment into the prize pool
+        game.prizePool.deposit(from: <- payment)
+
         self.games[gameId] <-! game
 
         emit GameCreated(
@@ -531,6 +551,8 @@ access(all) contract MinorityRuleGame {
             roundDuration: roundDuration,
             creator: creator
         )
+
+        emit PlayerJoined(gameId: gameId, player: creator, stake: entryFee)
 
         return gameId
     }

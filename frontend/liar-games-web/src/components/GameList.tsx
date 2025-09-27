@@ -5,6 +5,7 @@ import { useGame } from '@/contexts/GameContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { GameState } from '@/types/game';
 import { useRouter } from 'next/navigation';
+import RoundTimer from './RoundTimer';
 
 export default function GameList() {
   const { games, fetchGames, isLoading, joinGame } = useGame();
@@ -18,8 +19,6 @@ export default function GameList() {
 
   const getStateColor = (state: GameState) => {
     switch (state) {
-      case GameState.REGISTRATION:
-        return 'text-yellow-400';
       case GameState.ACTIVE:
         return 'text-green-400';
       case GameState.COMPLETE:
@@ -29,17 +28,27 @@ export default function GameList() {
     }
   };
 
-  const getStateBadge = (state: GameState) => {
-    switch (state) {
-      case GameState.REGISTRATION:
+  const getStateBadge = (state: GameState, currentRound: number) => {
+    if (state === GameState.ACTIVE) {
+      if (currentRound === 1) {
         return 'bg-yellow-900/50 text-yellow-400 border-yellow-700';
-      case GameState.ACTIVE:
-        return 'bg-green-900/50 text-green-400 border-green-700';
-      case GameState.COMPLETE:
-        return 'bg-gray-900/50 text-gray-400 border-gray-700';
-      default:
-        return 'bg-gray-900/50 text-gray-400 border-gray-700';
+      }
+      return 'bg-green-900/50 text-green-400 border-green-700';
     }
+    if (state === GameState.COMPLETE) {
+      return 'bg-gray-900/50 text-gray-400 border-gray-700';
+    }
+    return 'bg-gray-900/50 text-gray-400 border-gray-700';
+  };
+
+  const getStateText = (state: GameState, currentRound: number) => {
+    if (state === GameState.ACTIVE) {
+      if (currentRound === 1) {
+        return 'Round 1 - Open';
+      }
+      return `Round ${currentRound}`;
+    }
+    return state;
   };
 
   if (isLoading) {
@@ -65,8 +74,8 @@ export default function GameList() {
           >
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-white">Game #{game.gameId}</h3>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStateBadge(game.state)}`}>
-                {game.state}
+              <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStateBadge(game.state, game.currentRound)}`}>
+                {getStateText(game.state, game.currentRound)}
               </span>
             </div>
 
@@ -87,6 +96,12 @@ export default function GameList() {
                 <span className="text-gray-400">Round:</span>
                 <span className="text-white">{game.currentRound}</span>
               </div>
+              {game.state === GameState.ACTIVE && game.votingDeadline && (
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Time left:</span>
+                  <RoundTimer votingDeadline={game.votingDeadline} />
+                </div>
+              )}
             </div>
 
             {game.questionText && (
@@ -103,8 +118,8 @@ export default function GameList() {
               </div>
             )}
 
-            {/* Join Game Button */}
-            {game.state === GameState.REGISTRATION && (
+            {/* Join Game Button - Only available in Round 1 */}
+            {game.state === GameState.ACTIVE && game.currentRound === 1 && (
               <div className="mt-4 pt-4 border-t border-gray-700">
                 {!user?.addr ? (
                   <button
@@ -147,8 +162,8 @@ export default function GameList() {
               </div>
             )}
 
-            {/* Game Status for Non-Registration States */}
-            {game.state === GameState.ACTIVE && (
+            {/* Game Status for Round 2+ */}
+            {game.state === GameState.ACTIVE && game.currentRound > 1 && (
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <button
                   onClick={(e) => e.stopPropagation()}

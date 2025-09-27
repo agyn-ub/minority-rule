@@ -11,7 +11,7 @@ interface GameContextType {
   error: string | null;
   fetchGames: () => Promise<void>;
   fetchGameById: (gameId: string) => Promise<void>;
-  createGame: (entryFee: string, questionText: string) => Promise<void>;
+  createGame: (entryFee: string, questionText: string, roundDuration?: string) => Promise<void>;
   joinGame: (gameId: string, entryFee?: string) => Promise<void>;
   submitVote: (gameId: string, vote: boolean) => Promise<void>;
   claimPrize: (gameId: string) => Promise<void>;
@@ -82,9 +82,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         // Map Cadence state strings to frontend enum
         let mappedState: GameState;
         switch (game.state) {
-          case 'created':
-            mappedState = GameState.REGISTRATION;
-            break;
+          case 'created': // Should not happen anymore, but handle legacy games
           case 'active':
           case 'votingOpen':
           case 'processingRound':
@@ -94,7 +92,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.COMPLETE;
             break;
           default:
-            mappedState = GameState.REGISTRATION;
+            mappedState = GameState.ACTIVE;
         }
 
         return {
@@ -144,9 +142,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         // Map Cadence state strings to frontend enum
         let mappedState: GameState;
         switch (response.state) {
-          case 'created':
-            mappedState = GameState.REGISTRATION;
-            break;
+          case 'created': // Should not happen anymore, but handle legacy games
           case 'active':
           case 'votingOpen':
           case 'processingRound':
@@ -156,7 +152,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.COMPLETE;
             break;
           default:
-            mappedState = GameState.REGISTRATION;
+            mappedState = GameState.ACTIVE;
         }
 
         const formattedGame: Game = {
@@ -182,7 +178,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isInitialized]);
 
-  const createGame = useCallback(async (entryFee: string, questionText: string) => {
+  const createGame = useCallback(async (entryFee: string, questionText: string, roundDuration: string = '1800') => {
     if (!isInitialized) {
       console.log('FCL not yet initialized, skipping createGame');
       return;
@@ -193,22 +189,41 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const transactionId = await fcl.mutate({
         cadence: `
           import MinorityRuleGame from 0xMinorityRuleGame
+          import FungibleToken from 0xFungibleToken
           import FlowToken from 0xFlowToken
 
-          transaction(entryFee: UFix64, questionText: String) {
-            prepare(signer: auth(BorrowValue) &Account) {
+          transaction(entryFee: UFix64, roundDuration: UFix64, questionText: String) {
+            let creator: Address
+            let paymentVault: @{FungibleToken.Vault}
+
+            prepare(signer: auth(BorrowValue, SaveValue) &Account) {
+              self.creator = signer.address
+
+              // Get the creator's FlowToken vault
+              let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
+                  ?? panic("Could not borrow reference to owner's vault")
+
+              // Withdraw the entry fee for the creator
+              self.paymentVault <- vaultRef.withdraw(amount: entryFee)
+            }
+
+            execute {
+              // Create the game with creator's payment (creator is automatically added as first player)
               let gameId = MinorityRuleGame.createGame(
-                creator: signer.address,
+                creator: self.creator,
                 entryFee: entryFee,
-                roundDuration: 3600.0,  // 1 hour rounds
-                questionText: questionText
+                roundDuration: roundDuration,
+                questionText: questionText,
+                payment: <- self.paymentVault
               )
-              log("Created game with ID: ".concat(gameId.toString()))
+
+              log("Created new game with ID: ".concat(gameId.toString()).concat(" and joined as creator"))
             }
           }
         `,
         args: (arg: any, t: any) => [
           arg(entryFee, t.UFix64),
+          arg(roundDuration, t.UFix64),
           arg(questionText, t.String)
         ],
         limit: 100

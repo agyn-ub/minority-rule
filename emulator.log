@@ -770,3 +770,63 @@ Consider suggesting an improvement here: https://github.com/onflow/cadence/issue
 [90m8:47PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
 [90m8:47PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
 [90m8:47PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:00PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:00PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:00PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:00PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:00PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:00PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:00PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:00PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:00PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:00PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:00PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:00PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:00PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:00PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:00PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m6 [36mmemoryEstimate=[0m3508352 [36mscriptID=[0m699a7fa11ed31bdb6f1593485a69a518024eb89871f8c1f70224252bb7d93028
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m5db3299c80463dae670cce135624a237f0e97da0052ff83efd256a5445426e6a
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
+[90m9:02PM[0m DBG 🎁  GetLatestBlockHeader called               [36mblockHeight=[0m12 [36mblockID=[0m520e97624179ce9a47c6ca11e3ce07d785a4f7a8de2af8c1f3c3888c1356857a
+[90m9:02PM[0m DBG 👤  ExecuteScriptAtBlockHeight called         [36mblockHeight=[0m12
+[90m9:02PM[0m DBG ⭐  Script executed                           [36mcomputationUsed=[0m9 [36mmemoryEstimate=[0m3546358 [36mscriptID=[0m232e33fc0a3729649b2f28b36d3f901c3a1e70e760bf744962b78f1a450ebf7c
