@@ -226,9 +226,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [currentGame, fetchGameById]);
+  }, [currentGame, fetchGameById, isInitialized]);
 
   const submitVote = useCallback(async (gameId: string, vote: boolean) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping submitVote');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -257,9 +261,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [fetchGameById]);
+  }, [fetchGameById, isInitialized]);
 
   const claimPrize = useCallback(async (gameId: string) => {
+    if (!isInitialized) {
+      console.log('FCL not yet initialized, skipping claimPrize');
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -292,7 +300,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [fetchGameById]);
+  }, [fetchGameById, isInitialized]);
 
   return (
     <GameContext.Provider
