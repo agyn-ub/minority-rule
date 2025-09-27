@@ -174,6 +174,19 @@ access(all) contract MinorityRuleGame {
             emit PlayerJoined(gameId: self.gameId, player: player, stake: self.entryFee)
         }
 
+        // Test-only function to join without payment
+        access(all) fun joinGameTest(player: Address) {
+            pre {
+                self.state == GameState.created: "Game must be in created state to join"
+                self.players[player] == nil: "Player already in game"
+                UInt32(self.players.length) < self.maxPlayers: "Game is full"
+            }
+
+            self.players[player] = Player(address: player)
+            // No actual payment, just emit the event for tracking
+            emit PlayerJoined(gameId: self.gameId, player: player, stake: self.entryFee)
+        }
+
         // ========== Game Flow ==========
 
         access(all) fun startGame() {
