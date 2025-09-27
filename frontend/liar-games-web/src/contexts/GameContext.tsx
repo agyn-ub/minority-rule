@@ -95,12 +95,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.ACTIVE;
         }
 
+        // Convert players array to object for easy lookup
+        const playersObj: any = {};
+        if (game.players && Array.isArray(game.players)) {
+          game.players.forEach((address: string) => {
+            playersObj[address] = {
+              address,
+              isActive: true, // We don't have this data from GameInfo, assume active
+              eliminatedRound: 0
+            };
+          });
+        }
+
         return {
           gameId: game.gameId,
           entryFee: game.entryFee,
           state: mappedState,
           currentRound: parseInt(game.currentRound),
-          players: game.players || {},
+          players: playersObj,
           prizePool: game.prizePool,
           roundHistory: game.roundHistory || [],
           votingDeadline: game.votingDeadline,
@@ -155,12 +167,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             mappedState = GameState.ACTIVE;
         }
 
+        // Convert players array to object for easy lookup
+        const playersObj: any = {};
+        if (response.players && Array.isArray(response.players)) {
+          response.players.forEach((address: string) => {
+            playersObj[address] = {
+              address,
+              isActive: true, // We don't have this data from GameInfo, assume active
+              eliminatedRound: 0
+            };
+          });
+        }
+
         const formattedGame: Game = {
           gameId: response.gameId,
           entryFee: response.entryFee,
           state: mappedState,
           currentRound: parseInt(response.currentRound),
-          players: response.players || {},
+          players: playersObj,
           prizePool: response.prizePool,
           roundHistory: response.roundHistory || [],
           votingDeadline: response.votingDeadline,
