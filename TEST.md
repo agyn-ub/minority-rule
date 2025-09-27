@@ -16,7 +16,9 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 4. **Victory**: Game ends when fewer than 3 players remain
    - Can have 0, 1, or 2 winners
    - Prize pool is split equally among winners
-5. **Edge Cases**: If all players are eliminated, no winner is declared
+5. **Edge Cases**:
+   - If all players don't vote, no winner is declared
+   - If all players vote the same way (unanimous), the round is dismissed and no one is eliminated
 
 ### Game States
 - `created`: Game initialized, accepting players
@@ -198,6 +200,39 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - Active players list is empty
 - Prize pool cannot be claimed
 
+### Scenario I: Unanimous Voting (Dismissed Round) ✅ IMPLEMENTED
+**Setup:**
+- 4 players
+- Entry fee: 10 FLOW each
+- Prize pool: 40 FLOW
+
+**Round 1:**
+- All 4 players vote YES
+- Unanimous vote detected
+- Result: Round dismissed, all survive
+
+**Round 2:**
+- All 4 players vote NO
+- Unanimous vote detected
+- Result: Round dismissed, all survive
+
+**Round 3:**
+- 3 players vote YES (eliminated)
+- 1 player votes NO (survives)
+- Result: Minority wins
+- **Game ends**: 1 player remains
+
+**Actual Result:**
+- Unanimous rounds don't eliminate anyone
+- Game continues until actual minority exists
+- Final winner determined in Round 3
+
+**Validations:**
+- Unanimous vote detection works
+- No eliminations in dismissed rounds
+- Game continues properly after dismissed rounds
+- Normal minority/majority logic resumes
+
 ### Scenario H: Early Game End ✅ IMPLEMENTED
 **Setup:**
 - 5 players
@@ -333,7 +368,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 
 ## Test Implementation Status
 
-### Implemented Tests (8/8) ✅ ALL SCENARIOS IMPLEMENTED
+### Implemented Tests (9/9) ✅ ALL SCENARIOS IMPLEMENTED
 - ✅ Scenario A: Classic 5-Player Game
 - ✅ Scenario B: Minimum Player Game (2 Players)
 - ✅ Scenario C: Maximum Capacity Game (10 Players)
@@ -342,6 +377,7 @@ The Minority Rule Game is a strategic elimination game where players vote on a b
 - ✅ Scenario F: Single Survivor Victory Path
 - ✅ Scenario G: No Winners (Nobody Votes)
 - ✅ Scenario H: Early Game End
+- ✅ Scenario I: Unanimous Voting (Dismissed Round)
 
 ### Test Files
 - **Basic Tests**: `cadence/tests/MinorityRuleGame_test.cdc`

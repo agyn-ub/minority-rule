@@ -416,6 +416,81 @@ access(all) fun testScenarioG_NoWinners() {
     Test.assertEqual(0, winners.length) // No winners!
 }
 
+// ========== Scenario I: Unanimous Voting (Dismissed Round) ==========
+access(all) fun testScenarioI_UnanimousVoting() {
+    // Create test accounts for this scenario
+    let player1 = Test.createAccount()
+    let player2 = Test.createAccount()
+    let player3 = Test.createAccount()
+    let player4 = Test.createAccount()
+
+    let gameId = createGame(
+        creator: player1!.address,
+        entryFee: 10.0,
+        roundDuration: 60.0,
+        minPlayers: 3,
+        maxPlayers: 10,
+        question: "Will everyone vote the same?"
+    )
+
+    // 4 players join
+    joinGame(player1!, gameId, 10.0)
+    joinGame(player2!, gameId, 10.0)
+    joinGame(player3!, gameId, 10.0)
+    joinGame(player4!, gameId, 10.0)
+
+    startGame(gameId)
+
+    // Round 1: All vote YES - unanimous, round dismissed, no eliminations
+    submitVote(player1!, gameId, true)
+    submitVote(player2!, gameId, true)
+    submitVote(player3!, gameId, true)
+    submitVote(player4!, gameId, true)
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // All players should survive (unanimous vote)
+    var gameState = getGameState(gameId)
+    Test.assertEqual(3 as UInt8, gameState["state"] as! UInt8) // VotingOpen state (next round)
+
+    var activePlayers = getActivePlayers(gameId)
+    Test.assertEqual(4, activePlayers.length) // All 4 players still active
+
+    // Round 2: All vote NO - unanimous again, round dismissed
+    submitVote(player1!, gameId, false)
+    submitVote(player2!, gameId, false)
+    submitVote(player3!, gameId, false)
+    submitVote(player4!, gameId, false)
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // All players should still survive
+    gameState = getGameState(gameId)
+    Test.assertEqual(3 as UInt8, gameState["state"] as! UInt8) // VotingOpen state (next round)
+
+    activePlayers = getActivePlayers(gameId)
+    Test.assertEqual(4, activePlayers.length) // All 4 players still active
+
+    // Round 3: Split vote - 3 YES (eliminated), 1 NO (survives)
+    submitVote(player1!, gameId, true)
+    submitVote(player2!, gameId, true)
+    submitVote(player3!, gameId, true)
+    submitVote(player4!, gameId, false)
+
+    Test.moveTime(by: 61.0)
+    processRound(gameId)
+
+    // Game should end with 1 winner (player4)
+    gameState = getGameState(gameId)
+    Test.assertEqual(4 as UInt8, gameState["state"] as! UInt8) // Complete state
+
+    activePlayers = getActivePlayers(gameId)
+    Test.assertEqual(1, activePlayers.length)
+    Test.assertEqual(player4!.address, activePlayers[0])
+}
+
 // ========== Helper Functions ==========
 
 access(all) fun createGame(

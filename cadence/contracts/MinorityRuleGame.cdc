@@ -265,11 +265,13 @@ access(all) contract MinorityRuleGame {
             }
 
 
-            // Determine minority (if tied, both survive)
+            // Determine minority (if tied or unanimous, all survive)
             // If yesVotes < noVotes, then YES is minority (true)
             // If noVotes < yesVotes, then NO is minority (false)
             let minorityChoice: Bool = yesVotes < noVotes
             let isTie: Bool = yesVotes == noVotes
+            // Unanimous vote: all voted the same way (dismiss round)
+            let isUnanimous: Bool = (yesVotes > 0 && noVotes == 0) || (noVotes > 0 && yesVotes == 0)
 
 
             // Process eliminations
@@ -281,10 +283,10 @@ access(all) contract MinorityRuleGame {
 
                 // Check if player voted
                 if let vote = self.currentVotes[address] {
-                    // Player voted - check if in minority or tie
-                    // In a tie, everyone survives
+                    // Player voted - check if in minority, tie, or unanimous
+                    // In a tie or unanimous vote, everyone survives
                     // Otherwise, only minority survives
-                    if isTie || (vote == minorityChoice) {
+                    if isTie || isUnanimous || (vote == minorityChoice) {
                         surviving.append(address)
                     } else {
                         player.eliminate(round: self.currentRound)
