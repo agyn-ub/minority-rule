@@ -27,7 +27,18 @@ export default function GamePage() {
       // Instead of alert, we'll handle this in the UI
       return;
     }
-    await joinGame(gameId);
+    try {
+      await joinGame(gameId);
+      // Refresh the game data after joining
+      await fetchGameById(gameId);
+    } catch (error: any) {
+      // Check if it's an "already joined" error
+      if (error?.message?.includes('already joined') || error?.message?.includes('Player already in game')) {
+        // Refresh game data to update UI
+        await fetchGameById(gameId);
+      }
+      // Error is already handled in context
+    }
   };
 
   const handleSubmitVote = async () => {
@@ -72,7 +83,8 @@ export default function GamePage() {
   const isPlayer = user?.addr && currentGame.players[user.addr];
   const isActive = isPlayer && currentGame.players[user.addr].isActive;
   const isWinner = currentGame.winner === user?.addr;
-  const canJoin = currentGame.state === GameState.REGISTRATION && !isPlayer && user?.addr;
+  const isInRegistration = currentGame.state === GameState.ACTIVE && currentGame.currentRound === 1;
+  const canJoin = isInRegistration && !isPlayer && user?.addr;
   const canVote = currentGame.state === GameState.ACTIVE && isActive && !hasVoted;
   const canClaim = currentGame.state === GameState.COMPLETE && isWinner;
 
@@ -92,13 +104,13 @@ export default function GamePage() {
             <div className="flex justify-between items-start mb-4">
               <h1 className="text-2xl font-bold text-white">Game #{gameId}</h1>
               <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                currentGame.state === GameState.REGISTRATION
+                isInRegistration
                   ? 'bg-yellow-900/50 text-yellow-400 border-yellow-700'
                   : currentGame.state === GameState.ACTIVE
                   ? 'bg-green-900/50 text-green-400 border-green-700'
                   : 'bg-gray-900/50 text-gray-400 border-gray-700'
               }`}>
-                {currentGame.state}
+                {isInRegistration ? 'REGISTRATION' : currentGame.state}
               </span>
             </div>
 
@@ -144,7 +156,7 @@ export default function GamePage() {
             <h3 className="text-lg font-semibold text-white mb-4">Game Actions</h3>
 
             {/* Registration State */}
-            {currentGame.state === GameState.REGISTRATION && (
+            {isInRegistration && (
               <>
                 {!user?.addr ? (
                   <>
@@ -188,7 +200,7 @@ export default function GamePage() {
             )}
 
             {/* Active State - Not a Player */}
-            {currentGame.state === GameState.ACTIVE && !isPlayer && (
+            {currentGame.state === GameState.ACTIVE && !isInRegistration && !isPlayer && (
               <>
                 <p className="text-gray-400 mb-4">
                   This game is currently in progress. You cannot join an active game.
@@ -203,7 +215,7 @@ export default function GamePage() {
             )}
 
             {/* Active State - Eliminated Player */}
-            {currentGame.state === GameState.ACTIVE && isPlayer && !isActive && (
+            {currentGame.state === GameState.ACTIVE && !isInRegistration && isPlayer && !isActive && (
               <>
                 <p className="text-gray-400 mb-4">
                   You were eliminated in round {currentGame.players[user.addr].eliminatedRound}.

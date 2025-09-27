@@ -147,13 +147,19 @@ export default function GameList() {
                       try {
                         await joinGame(game.gameId, game.entryFee);
                         await fetchGames(); // Refresh the games list after joining
-                      } catch (error) {
-                        console.error('Failed to join game:', error);
+                      } catch (error: any) {
+                        // Check if it's an "already joined" error
+                        if (error?.message?.includes('Player already in game')) {
+                          // Refresh to update UI with current state
+                          await fetchGames();
+                        } else {
+                          console.error('Failed to join game:', error);
+                        }
                       } finally {
                         setJoiningGameId(null);
                       }
                     }}
-                    disabled={joiningGameId === game.gameId}
+                    disabled={joiningGameId === game.gameId || (user?.addr && game.players[user.addr])}
                     className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {joiningGameId === game.gameId ? 'Joining...' : `Join Game (${game.entryFee} FLOW)`}

@@ -3,4 +3,9 @@ emulator-account.pkey
 imports
 .env
 Icon.info
+
+# Flow emulator and dev wallet files
 emulator.log
+.emulator.pid
+.dev-wallet.pid
+*.pid

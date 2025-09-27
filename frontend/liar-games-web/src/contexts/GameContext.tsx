@@ -178,6 +178,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isInitialized]);
 
+  // Helper function to format UFix64 values for Cadence
+  const formatUFix64 = (value: string): string => {
+    // If no decimal point, add .0
+    return value.includes('.') ? value : `${value}.0`;
+  };
+
   const createGame = useCallback(async (entryFee: string, questionText: string, roundDuration: string = '1800') => {
     if (!isInitialized) {
       console.log('FCL not yet initialized, skipping createGame');
@@ -222,8 +228,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           }
         `,
         args: (arg: any, t: any) => [
-          arg(entryFee, t.UFix64),
-          arg(roundDuration, t.UFix64),
+          arg(formatUFix64(entryFee), t.UFix64),
+          arg(formatUFix64(roundDuration), t.UFix64),
           arg(questionText, t.String)
         ],
         limit: 100
@@ -277,6 +283,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                   ?? panic("Game does not exist")
 
               // Join the game with payment
+              // The contract will handle duplicate join validation
               game.joinGame(player: self.playerAddress, payment: <- self.paymentVault)
 
               log("Player ".concat(self.playerAddress.toString()).concat(" joined game ").concat(gameId.toString()))
@@ -285,7 +292,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         `,
         args: (arg: any, t: any) => [
           arg(gameId, t.UInt64),
-          arg(gameEntryFee, t.UFix64)
+          arg(formatUFix64(gameEntryFee), t.UFix64)
         ],
         limit: 100
       });
@@ -293,9 +300,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       await fcl.tx(transactionId).onceSealed();
       await fetchGames(); // Refresh all games
       await fetchGameById(gameId);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error joining game:', err);
-      setError('Failed to join game');
+      // Check if it's an "already joined" error
+      if (err?.message?.includes('Player already in game')) {
+        setError('You have already joined this game');
+        // Still refresh to ensure UI is in sync
+        await fetchGames();
+        await fetchGameById(gameId);
+      } else {
+        setError('Failed to join game');
+      }
       throw err; // Re-throw to handle in the UI
     } finally {
       setIsLoading(false);
