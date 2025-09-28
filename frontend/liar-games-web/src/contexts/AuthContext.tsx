@@ -1,10 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import fcl, { initializeFCL } from '@/lib/flow/config';
+import type { CurrentUser } from '@onflow/typedefs';
+import * as types from '@onflow/types';
+
+// Type for FCL args function
+type ArgsFn = (arg: typeof fcl.arg, t: typeof types) => unknown[];
 
 interface AuthContextType {
-  user: any | null;
+  user: CurrentUser | null;
   balance: string | null;
   isLoading: boolean;
   logIn: () => Promise<void>;
@@ -22,11 +27,11 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<CurrentUser | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchBalance = async () => {
+  const fetchBalance = useCallback(async () => {
     if (!user?.addr) {
       setBalance(null);
       return;
@@ -48,26 +53,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               return vaultRef.balance
           }
         `,
-        args: (arg: any, t: any) => [arg(user.addr, t.Address)],
+        args: ((arg, t) => [arg(user.addr ?? '', t.Address)]) as ArgsFn,
       });
 
       // Format balance to 2 decimal places
       const formattedBalance = parseFloat(result).toFixed(2);
       setBalance(formattedBalance);
     } catch (error) {
-      console.error('Error fetching balance:', error);
-      setBalance('0.00');
+      // Only log error in development to avoid console spam
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching balance:', error);
+      }
+      // Don't reset balance on error - keep the last known value
+      // Only set to 0 if we don't have a balance yet
+      if (balance === null) {
+        setBalance('0.00');
+      }
     }
-  };
+  }, [user, balance]);
 
   useEffect(() => {
     initializeFCL();
 
     const unsubscribe = fcl.currentUser.subscribe((currentUser) => {
       setUser(currentUser);
-      if (currentUser?.addr) {
-        fetchBalance();
-      } else {
+      // Don't fetch balance here - let the other useEffect handle it
+      if (!currentUser?.addr) {
         setBalance(null);
       }
     });
@@ -79,13 +90,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Fetch balance when user changes
   useEffect(() => {
     if (user?.addr) {
+      // Initial fetch
       fetchBalance();
 
-      // Set up periodic balance refresh every 10 seconds
-      const interval = setInterval(fetchBalance, 10000);
+      // Set up periodic balance refresh every 30 seconds (instead of 10)
+      // to reduce API calls
+      const interval = setInterval(() => {
+        fetchBalance();
+      }, 30000);
+
       return () => clearInterval(interval);
     }
-  }, [user]);
+  }, [user?.addr, fetchBalance]);
 
   const logIn = async () => {
     try {

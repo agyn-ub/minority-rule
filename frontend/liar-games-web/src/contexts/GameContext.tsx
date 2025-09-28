@@ -1,9 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { Game, GameState } from '@/types/game';
+import { Game, GameState, Player } from '@/types/game';
 import fcl, { initializeFCL } from '@/lib/flow/config';
 import { useAuth } from '@/contexts/AuthContext';
+import * as types from '@onflow/types';
+
+// Type for FCL args function
+type ArgsFn = (arg: typeof fcl.arg, t: typeof types) => unknown[];
 
 interface GameContextType {
   games: Game[];
@@ -79,12 +83,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               return MinorityRuleGame.getGameInfo(gameId: gameId)
             }
           `,
-          args: (arg: any, t: any) => [arg(gameId, t.UInt64)]
+          args: ((arg, t) => [arg(gameId, t.UInt64)]) as ArgsFn
         })
       );
 
       const gameData = await Promise.all(gamePromises);
-      const formattedGames = gameData.filter(Boolean).map((game: any) => {
+      const formattedGames = gameData.filter(Boolean).map((game: Record<string, unknown>) => {
         // Map Cadence state to frontend enum
         let mappedState: GameState;
         switch (game.state) {
@@ -108,54 +112,60 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Parse players - GameInfo returns an array of addresses
-        const playersObj: any = {};
+        const playersObj: Record<string, Player> = {};
         if (game.players && Array.isArray(game.players)) {
           // Fetch detailed player data if needed
           game.players.forEach((address: string) => {
             playersObj[address] = {
               address,
               isActive: true, // Will be updated with proper data later
-              eliminatedRound: undefined,
+              joinedAt: 0,
               votingHistory: [],
-              joinedAt: 0
+              eliminatedRound: undefined
             };
           });
         }
 
         // Parse round history properly
-        const roundHistory = game.roundHistory?.map((round: any) => ({
-          round: parseInt(round.round),
-          votes: round.votes || {},
-          minorityChoice: round.minorityChoice,
-          eliminatedPlayers: round.eliminatedPlayers || [],
-          survivingPlayers: round.survivingPlayers || [],
-          timestamp: parseFloat(round.timestamp)
+        const roundHistory = (game.roundHistory as Array<Record<string, unknown>>)?.map((round) => ({
+          round: parseInt(String(round.round)),
+          votes: (round.votes || {}) as Record<string, boolean>,
+          minorityChoice: round.minorityChoice as boolean | undefined,
+          eliminatedPlayers: (round.eliminatedPlayers || []) as string[],
+          survivingPlayers: (round.survivingPlayers || []) as string[],
+          timestamp: parseFloat(String(round.timestamp))
         })) || [];
 
         return {
-          gameId: game.gameId,
-          entryFee: game.entryFee,
+          gameId: String(game.gameId),
+          entryFee: String(game.entryFee),
           state: mappedState,
-          currentRound: parseInt(game.currentRound),
+          currentRound: parseInt(String(game.currentRound)),
           players: playersObj,
-          prizePool: game.prizePool,
+          prizePool: String(game.prizePool),
           roundHistory,
-          votingDeadline: game.votingDeadline,
-          questionText: game.questionText,
-          creator: game.creator,
-          winner: game.winner,
-          roundDuration: game.roundDuration || '1800.0'
-        };
+          votingDeadline: String(game.votingDeadline),
+          questionText: String(game.questionText),
+          creator: String(game.creator),
+          winner: game.winner ? String(game.winner) : undefined,
+          roundDuration: String(game.roundDuration || '1800.0')
+        } as Game;
       });
 
       setGames(formattedGames);
     } catch (err) {
-      console.error('Error fetching games:', err);
-      setError('Failed to fetch games');
+      // Only log in development to reduce console spam
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching games:', err);
+      }
+      // Don't set error for network issues if we already have data
+      if (games.length === 0) {
+        setError('Failed to fetch games');
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [isInitialized]);
+  }, [isInitialized, games.length]);
 
   const fetchGameById = useCallback(async (gameId: string) => {
     if (!isInitialized) {
@@ -173,7 +183,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             return MinorityRuleGame.getGameInfo(gameId: gameId)
           }
         `,
-        args: (arg: any, t: any) => [arg(gameId, t.UInt64)]
+        args: ((arg, t) => [arg(gameId, t.UInt64)]) as ArgsFn
       });
 
       if (response) {
@@ -200,27 +210,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Parse players - GameInfo returns an array of addresses
-        const playersObj: any = {};
+        const playersObj: Record<string, Player> = {};
         if (response.players && Array.isArray(response.players)) {
           response.players.forEach((address: string) => {
             playersObj[address] = {
               address,
               isActive: true, // Will be updated with proper data later
-              eliminatedRound: undefined,
+              joinedAt: 0,
               votingHistory: [],
-              joinedAt: 0
+              eliminatedRound: undefined
             };
           });
         }
 
         // Parse round history properly
-        const roundHistory = response.roundHistory?.map((round: any) => ({
-          round: parseInt(round.round),
-          votes: round.votes || {},
-          minorityChoice: round.minorityChoice,
-          eliminatedPlayers: round.eliminatedPlayers || [],
-          survivingPlayers: round.survivingPlayers || [],
-          timestamp: parseFloat(round.timestamp)
+        const roundHistory = (response.roundHistory as Array<Record<string, unknown>>)?.map((round) => ({
+          round: parseInt(String(round.round)),
+          votes: (round.votes || {}) as Record<string, boolean>,
+          minorityChoice: round.minorityChoice as boolean | undefined,
+          eliminatedPlayers: (round.eliminatedPlayers || []) as string[],
+          survivingPlayers: (round.survivingPlayers || []) as string[],
+          timestamp: parseFloat(String(round.timestamp))
         })) || [];
 
         // Get voting status if game is in voting state
@@ -239,7 +249,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                   return game!.getVotingStatus()
                 }
               `,
-              args: (arg: any, t: any) => [arg(response.gameId, t.UInt64)]
+              args: ((arg, t) => [arg(response.gameId, t.UInt64)]) as ArgsFn
             });
             votingStatus = votingResponse;
           } catch (err) {
@@ -248,7 +258,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Update player active status based on round history
-        roundHistory.forEach((round: any) => {
+        roundHistory.forEach((round) => {
           round.eliminatedPlayers?.forEach((address: string) => {
             if (playersObj[address]) {
               playersObj[address].isActive = false;
@@ -258,29 +268,35 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         });
 
         const formattedGame: Game = {
-          gameId: response.gameId,
-          entryFee: response.entryFee,
+          gameId: String(response.gameId),
+          entryFee: String(response.entryFee),
           state: mappedState,
-          currentRound: parseInt(response.currentRound),
+          currentRound: parseInt(String(response.currentRound)),
           players: playersObj,
-          prizePool: response.prizePool,
+          prizePool: String(response.prizePool),
           roundHistory,
-          votingDeadline: response.votingDeadline,
-          questionText: response.questionText,
-          creator: response.creator,
-          winner: response.winner,
-          roundDuration: response.roundDuration || '1800.0',
+          votingDeadline: String(response.votingDeadline),
+          questionText: String(response.questionText),
+          creator: String(response.creator),
+          winner: response.winner ? String(response.winner) : undefined,
+          roundDuration: String(response.roundDuration || '1800.0'),
           votingStatus
         };
         setCurrentGame(formattedGame);
       }
     } catch (err) {
-      console.error('Error fetching game:', err);
-      setError('Failed to fetch game details');
+      // Only log in development to reduce console spam
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching game:', err);
+      }
+      // Don't set error if we already have the game data
+      if (!currentGame || currentGame.gameId !== gameId) {
+        setError('Failed to fetch game details');
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [isInitialized]);
+  }, [isInitialized, currentGame]);
 
   // Helper function to format UFix64 values for Cadence
   const formatUFix64 = (value: string): string => {
@@ -331,11 +347,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
           }
         `,
-        args: (arg: any, t: any) => [
+        args: ((arg, t) => [
           arg(formatUFix64(entryFee), t.UFix64),
           arg(formatUFix64(roundDuration), t.UFix64),
           arg(questionText, t.String)
-        ],
+        ]) as ArgsFn,
         limit: 100
       });
 
@@ -416,10 +432,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
           }
         `,
-        args: (arg: any, t: any) => [
+        args: ((arg, t) => [
           arg(gameId, t.UInt64),
           arg(formatUFix64(gameEntryFee), t.UFix64)
-        ],
+        ]) as ArgsFn,
         limit: 100
       });
 
@@ -427,10 +443,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       await fetchGames(); // Refresh all games
       await fetchGameById(gameId);
       await fetchBalance(); // Refresh balance after joining game
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error joining game:', err);
       // Check if it's an "already joined" error (shouldn't happen with pre-check, but just in case)
-      if (err?.message?.includes('Player already in game')) {
+      if ((err as Error)?.message?.includes('Player already in game')) {
         setError('You have already joined this game');
         // Still refresh to ensure UI is in sync
         await fetchGames();
@@ -442,7 +458,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [games, currentGame, fetchGames, fetchGameById, isInitialized]);
+  }, [games, currentGame, fetchGames, fetchGameById, isInitialized, fetchBalance]);
 
   const submitVote = useCallback(async (gameId: string, vote: boolean) => {
     if (!isInitialized) {
@@ -475,10 +491,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
           }
         `,
-        args: (arg: any, t: any) => [
+        args: ((arg, t) => [
           arg(gameId, t.UInt64),
           arg(vote, t.Bool)
-        ],
+        ]) as ArgsFn,
         limit: 100
       });
 
@@ -538,7 +554,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
           }
         `,
-        args: (arg: any, t: any) => [arg(gameId, t.UInt64)],
+        args: ((arg, t) => [arg(gameId, t.UInt64)]) as ArgsFn,
         limit: 100
       });
 
@@ -595,7 +611,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             }
           }
         `,
-        args: (arg: any, t: any) => [arg(gameId, t.UInt64)],
+        args: ((arg, t) => [arg(gameId, t.UInt64)]) as ArgsFn,
         limit: 1000 // Higher limit for processing
       });
 
@@ -627,10 +643,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             return game!.hasPlayerVoted(player: player)
           }
         `,
-        args: (arg: any, t: any) => [
+        args: ((arg, t) => [
           arg(gameId, t.UInt64),
           arg(playerAddress, t.Address)
-        ]
+        ]) as ArgsFn
       });
       return response || false;
     } catch (err) {

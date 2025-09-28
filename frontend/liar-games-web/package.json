@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "type-check": "tsc --noEmit",
     "emulator": "flow emulator start",
     "dev-wallet": "flow dev-wallet",
     "deploy": "flow project deploy --network emulator"

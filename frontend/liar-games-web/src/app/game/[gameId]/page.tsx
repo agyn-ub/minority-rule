@@ -21,10 +21,10 @@ export default function GamePage() {
   useEffect(() => {
     if (gameId) {
       fetchGameById(gameId);
-      // Poll for updates every 5 seconds
+      // Poll for updates every 10 seconds (reduced from 5)
       const interval = setInterval(() => {
         fetchGameById(gameId);
-      }, 5000);
+      }, 10000);
       return () => clearInterval(interval);
     }
   }, [gameId, fetchGameById]);
@@ -99,7 +99,7 @@ export default function GamePage() {
   }
 
   const isPlayer = user?.addr && currentGame.players[user.addr];
-  const isActive = isPlayer && currentGame.players[user.addr].isActive;
+  const isActive = isPlayer && user?.addr && currentGame.players[user.addr]?.isActive;
   const isWinner = currentGame.winner === user?.addr;
   const canJoin = (currentGame.state === GameState.VOTING_OPEN || currentGame.state === GameState.ACTIVE) &&
                   currentGame.currentRound === 1 && !isPlayer;
@@ -338,7 +338,7 @@ export default function GamePage() {
             {isPlayer && !isActive && currentGame.state !== GameState.COMPLETE && (
               <div>
                 <p className="text-gray-400 mb-4">
-                  You were eliminated in round {currentGame.players[user.addr].eliminatedRound}.
+                  You were eliminated in round {user?.addr && currentGame.players[user.addr]?.eliminatedRound}.
                 </p>
                 <button
                   disabled

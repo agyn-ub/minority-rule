@@ -23,7 +23,7 @@ export interface Player {
 export interface RoundResult {
   round: number;
   votes: { [address: string]: boolean };
-  minorityChoice: boolean;
+  minorityChoice?: boolean;
   eliminatedPlayers: string[];
   survivingPlayers: string[];
   timestamp: number;
