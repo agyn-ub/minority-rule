@@ -15,6 +15,7 @@ export default function GamePage() {
   const [vote, setVote] = useState<boolean | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const gameId = params.gameId as string;
 
@@ -51,10 +52,21 @@ export default function GamePage() {
       alert('Please select a vote');
       return;
     }
-    await submitVote(gameId, vote);
-    setHasVoted(true);
-    // Refresh to get updated voting status
-    await fetchGameById(gameId);
+    setIsSubmitting(true);
+    try {
+      console.log('Submitting vote:', { gameId, vote });
+      await submitVote(gameId, vote);
+      setHasVoted(true);
+      // Refresh to get updated voting status
+      await fetchGameById(gameId);
+    } catch (err) {
+      console.error('Vote submission failed:', err);
+      // Show the actual error to the user
+      const errorMessage = err instanceof Error ? err.message : 'Failed to submit vote';
+      alert(`Error submitting vote: ${errorMessage}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClaimPrize = async () => {
@@ -280,10 +292,10 @@ export default function GamePage() {
 
                 <button
                   onClick={handleSubmitVote}
-                  disabled={isLoading || vote === null}
+                  disabled={isSubmitting || vote === null}
                   className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-900 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg transition-colors"
                 >
-                  {isLoading ? 'Submitting...' : 'Submit Vote'}
+                  {isSubmitting ? 'Submitting...' : 'Submit Vote'}
                 </button>
               </div>
             )}

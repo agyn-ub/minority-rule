@@ -465,6 +465,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       console.log('FCL not yet initialized, skipping submitVote');
       return;
     }
+    console.log('Starting vote submission:', { gameId, vote, isInitialized });
     setIsLoading(true);
     setError(null);
     try {
@@ -475,7 +476,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           transaction(gameId: UInt64, vote: Bool) {
             let playerAddress: Address
 
-            prepare(signer: auth(BorrowValue) &Account) {
+            prepare(signer: auth(Storage) &Account) {
               self.playerAddress = signer.address
             }
 
@@ -498,11 +499,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         limit: 100
       });
 
+      console.log('Transaction ID:', transactionId);
       await fcl.tx(transactionId).onceSealed();
+      console.log('Vote submitted successfully');
       await fetchGameById(gameId);
     } catch (err) {
       console.error('Error submitting vote:', err);
       setError('Failed to submit vote');
+      throw err; // Re-throw to let component handle it
     } finally {
       setIsLoading(false);
     }

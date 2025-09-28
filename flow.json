@@ -91,11 +91,23 @@
 				"type": "file",
 				"location": "emulator-account.pkey"
 			}
+		},
+		"liar-games": {
+			"address": "601daebc4a929712",
+			"key": {
+				"type": "file",
+				"location": "liar-games.pkey"
+			}
 		}
 	},
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
+				"MinorityRuleGame"
+			]
+		},
+		"testnet": {
+			"liar-games": [
 				"MinorityRuleGame"
 			]
 		}

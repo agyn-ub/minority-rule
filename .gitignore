@@ -1,5 +1,6 @@
 # flow
 emulator-account.pkey
+testnet-account.pkey
 imports
 .env
 Icon.info
@@ -9,3 +10,4 @@ emulator.log
 .emulator.pid
 .dev-wallet.pid
 *.pid
+liar-games.pkey
